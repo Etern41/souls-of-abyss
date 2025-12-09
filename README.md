@@ -31,7 +31,7 @@ Souls of the Abyss is a wave-based survival game where you:
 ### Setup in Quadcode IDE
 
 #### Step 1: Copy Game Code Prompts (Cody)
-1. Open `PROMPTS-UPDATED.md` → Copy **PROMPT #1: GAME.JS**
+1. Open `PROMPTS.md` → Copy **PROMPT #1: GAME.JS**
 2. Open **Cody** chat in Quadcode IDE
 3. Paste the prompt
 4. Wait for response (~30-60 seconds)
@@ -41,7 +41,7 @@ Souls of the Abyss is a wave-based survival game where you:
 8. Repeat for **PROMPT #2: INDEX.HTML**
 
 #### Step 2: Generate Sprites (Dali)
-1. Open `PROMPTS-UPDATED.md` → Copy **PROMPT #3: SPRITE SHEETS**
+1. Open `PROMPTS.md` → Copy **PROMPT #3: SPRITE SHEETS**
 2. Open **Dali** chat in Quadcode IDE
 3. Paste the prompt
 4. Wait for response (sprite generation takes 2-5 minutes)
@@ -56,7 +56,7 @@ Expected files:
 - `sprites/particles.png`, `sprites/map.png` (effects & background)
 
 #### Step 3: Generate Animation Specs (Sonic)
-1. Open `PROMPTS-UPDATED.md` → Copy **PROMPT #4: ANIMATION SPECS**
+1. Open `PROMPTS.md` → Copy **PROMPT #4: ANIMATION SPECS**
 2. Open **Sonic** chat in Quadcode IDE
 3. Paste the prompt
 4. Wait for response (JSON generation ~30 seconds)
@@ -151,8 +151,8 @@ There's no "winning" in this game — survival time and kill count are your scor
 souls-of-abyss/
 ├── index.html                    ← Start here
 ├── game.js                       ← Game logic (from Cody)
-├── GAME-DESIGN-UPDATED.md        ← Detailed specs
-├── PROMPTS-UPDATED.md            ← Copy-paste prompts for agents
+├── GAME-DESIGN.md        ← Detailed specs
+├── PROMPTS.md            ← Copy-paste prompts for agents
 ├── README.md                     ← This file
 ├── sprites/                      ← All visuals (from Dali)
 │   ├── knight.png
