@@ -1,0 +1,10 @@
+{
+  "entityType": "particles",
+  "animations": {
+    "slash": {"frameCount": 4, "frameTime": 0.08, "loop": false},
+    "explosion": {"frameCount": 4, "frameTime": 0.1, "loop": false},
+    "spark": {"frameCount": 3, "frameTime": 0.1, "loop": false},
+    "blood": {"frameCount": 2, "frameTime": 0.12, "loop": false},
+    "glow": {"frameCount": 4, "frameTime": 0.1, "loop": false}
+  }
+}

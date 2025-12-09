@@ -1,0 +1,61 @@
+{
+  "file_name": "meta/plans/animations-build.md",
+  "revisions": [
+    {
+      "revision_id": "84850438-a472-4605-a3c0-4f6dae15a543",
+      "metadata": {
+        "timestamp": "2025-12-09T14:06:03.995283",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 1422,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "complete animation plan"
+      },
+      "saved_at": "2025-12-09T14:06:04.000795"
+    },
+    {
+      "revision_id": "82eaae4a-17eb-4f0a-9f99-591e5ecda2e7",
+      "metadata": {
+        "timestamp": "2025-12-09T14:05:46.413377",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 1425,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "update animation plan status"
+      },
+      "saved_at": "2025-12-09T14:05:46.414880"
+    },
+    {
+      "revision_id": "98cf581a-0b5a-4ef6-84e9-0d1963023caa",
+      "metadata": {
+        "timestamp": "2025-12-09T14:03:09.801845",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 1441,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "create animation plan"
+      },
+      "saved_at": "2025-12-09T14:03:09.809236"
+    },
+    {
+      "revision_id": "0f0c50df-3201-4817-bdfd-3aecaa8faff9",
+      "metadata": {
+        "timestamp": "2025-12-09T14:03:09.785390",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 0,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": null
+      },
+      "saved_at": "2025-12-09T14:03:09.790913"
+    }
+  ]
+}

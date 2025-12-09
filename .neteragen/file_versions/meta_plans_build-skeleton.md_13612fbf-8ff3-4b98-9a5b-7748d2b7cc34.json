@@ -1,0 +1,16 @@
+{
+  "file_name": "meta/plans/build-skeleton.md",
+  "revision_id": "13612fbf-8ff3-4b98-9a5b-7748d2b7cc34",
+  "metadata": {
+    "timestamp": "2025-12-09T14:07:08.813930",
+    "type": "cache_version",
+    "source": "ToolTextFileEdit",
+    "size": 1066,
+    "is_reverted": false,
+    "git_branch_name": "",
+    "agent_name": "Many",
+    "description": "mark structure verification complete"
+  },
+  "content": "---\nSECTION_ID: plans.build.skeleton_generation\nTYPE: plan\nSTATUS: in_progress\nPRIORITY: high\n---\n\n# Initial Playable Build Generation\n\nGOAL: Produce Souls of the Abyss playable skeleton (game.js, index.html, sprites/, animations/) per PROMPTS.md so QA can run tests.\nTIMELINE: Today\n\n## Task Checklist\n\n### Phase 1: Code Generation\n- [x] Review PROMPTS.md requirements for Cody outputs\n- [x] Delegate PROMPT #1 to Cody → save game.js (completed, file in repo)\n- [x] Delegate PROMPT #2 to Cody → save index.html\n\n### Phase 2: Asset Generation\n- [x] Delegate PROMPT #3 to Dali → populate sprites/\n- [x] Delegate PROMPT #4 to Sonic → populate animations/\n\n### Phase 3: Integration & Verification\n- [x] Verify file structure + counts match README checklist (Cody verified names/counts; pending content QA)\n- [*] Trigger Jace for initial smoke test once files exist\n\n## Success Criteria\n- [ ] game.js and index.html exist with Cody-spec code (no TODOs)\n- [ ] sprites/ has required 15 PNGs, animations/ has 14 JSONs\n- [ ] Basic browser load succeeds; handoff to QA ready\n",
+  "saved_at": "2025-12-09T14:07:08.813930"
+}

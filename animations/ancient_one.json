@@ -1,0 +1,17 @@
+{
+  "entityType": "ancient_one",
+  "spriteSize": 96,
+  "animations": {
+    "idle": {"frameCount": 2, "frameTime": 0.5, "loop": true, "nextState": "idle"},
+    "attack": {"frameCount": 1, "frameTime": 0.8, "loop": false, "nextState": "idle", "damageFrame": 0},
+    "phase_change": {"frameCount": 1, "frameTime": 1, "loop": false, "nextState": "idle"},
+    "death": {"frameCount": 1, "frameTime": 2, "loop": false, "nextState": "death"}
+  },
+  "transitions": {
+    "idle": ["attack", "phase_change", "death"],
+    "attack": ["idle", "phase_change", "death"],
+    "phase_change": ["idle", "attack", "death"],
+    "death": []
+  },
+  "physics": {"gravity": 0, "friction": 0}
+}

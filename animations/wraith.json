@@ -1,0 +1,15 @@
+{
+  "entityType": "wraith",
+  "spriteSize": 48,
+  "animations": {
+    "walk": {"frameCount": 2, "frameTime": 0.4, "loop": true, "nextState": "walk"},
+    "attack": {"frameCount": 1, "frameTime": 0.4, "loop": false, "nextState": "walk", "damageFrame": 0},
+    "death": {"frameCount": 4, "frameTime": 0.15, "loop": false, "nextState": "death"}
+  },
+  "transitions": {
+    "walk": ["attack", "death"],
+    "attack": ["walk", "death"],
+    "death": []
+  },
+  "physics": {"gravity": 0, "friction": 0}
+}

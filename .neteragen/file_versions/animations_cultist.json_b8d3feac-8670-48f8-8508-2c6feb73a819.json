@@ -1,0 +1,16 @@
+{
+  "file_name": "animations/cultist.json",
+  "revision_id": "b8d3feac-8670-48f8-8508-2c6feb73a819",
+  "metadata": {
+    "timestamp": "2025-12-09T14:04:11.441354",
+    "type": "cache_version",
+    "source": "ToolTextFileEdit",
+    "size": 499,
+    "is_reverted": false,
+    "git_branch_name": "",
+    "agent_name": "Many",
+    "description": "add cultist animation"
+  },
+  "content": "{\n  \"entityType\": \"cultist\",\n  \"spriteSize\": 48,\n  \"animations\": {\n    \"walk\": {\"frameCount\": 2, \"frameTime\": 0.5, \"loop\": true, \"nextState\": \"walk\"},\n    \"attack\": {\"frameCount\": 1, \"frameTime\": 0.4, \"loop\": false, \"nextState\": \"walk\", \"damageFrame\": 0},\n    \"death\": {\"frameCount\": 4, \"frameTime\": 0.15, \"loop\": false, \"nextState\": \"death\"}\n  },\n  \"transitions\": {\n    \"walk\": [\"attack\", \"death\"],\n    \"attack\": [\"walk\", \"death\"],\n    \"death\": []\n  },\n  \"physics\": {\"gravity\": 0, \"friction\": 0}\n}\n",
+  "saved_at": "2025-12-09T14:04:11.441354"
+}

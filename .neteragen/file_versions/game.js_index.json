@@ -1,0 +1,75 @@
+{
+  "file_name": "game.js",
+  "revisions": [
+    {
+      "revision_id": "fb06e9a7-6e1c-4220-a004-21027fa23037",
+      "metadata": {
+        "timestamp": "2025-12-09T13:53:25.374951",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 35438,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "Use per-player unlock queue for weapons"
+      },
+      "saved_at": "2025-12-09T13:53:25.389359"
+    },
+    {
+      "revision_id": "dce516f0-ffc6-4e62-897c-69b939fcbff4",
+      "metadata": {
+        "timestamp": "2025-12-09T13:53:20.546721",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 35438,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "Adjust player weapon unlock flow"
+      },
+      "saved_at": "2025-12-09T13:53:20.548839"
+    },
+    {
+      "revision_id": "b5d35014-9ea2-449a-ab9a-b6fb74893df0",
+      "metadata": {
+        "timestamp": "2025-12-09T13:52:28.552735",
+        "type": "cache_version",
+        "source": "file_modified",
+        "size": 35664,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "File modified"
+      },
+      "saved_at": "2025-12-09T13:52:28.555248"
+    },
+    {
+      "revision_id": "618432e4-6887-439f-8fe9-e93e229b5b13",
+      "metadata": {
+        "timestamp": "2025-12-09T13:52:28.549224",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 35664,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "Add complete Souls of the Abyss game.js implementation"
+      },
+      "saved_at": "2025-12-09T13:52:28.551735"
+    },
+    {
+      "revision_id": "82ec2a0b-979a-4453-92ed-863a4df5d463",
+      "metadata": {
+        "timestamp": "2025-12-09T13:52:28.514390",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 0,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": null
+      },
+      "saved_at": "2025-12-09T13:52:28.538511"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "file_name": "animations/warden.json",
+  "revision_id": "128e8664-1ce7-4906-a3a4-e1df3cf50504",
+  "metadata": {
+    "timestamp": "2025-12-09T14:04:44.733232",
+    "type": "cache_version",
+    "source": "ToolTextFileEdit",
+    "size": 498,
+    "is_reverted": false,
+    "git_branch_name": "",
+    "agent_name": "Many",
+    "description": "add warden animation"
+  },
+  "content": "{\n  \"entityType\": \"warden\",\n  \"spriteSize\": 48,\n  \"animations\": {\n    \"walk\": {\"frameCount\": 2, \"frameTime\": 0.4, \"loop\": true, \"nextState\": \"walk\"},\n    \"attack\": {\"frameCount\": 1, \"frameTime\": 0.4, \"loop\": false, \"nextState\": \"walk\", \"damageFrame\": 0},\n    \"death\": {\"frameCount\": 4, \"frameTime\": 0.15, \"loop\": false, \"nextState\": \"death\"}\n  },\n  \"transitions\": {\n    \"walk\": [\"attack\", \"death\"],\n    \"attack\": [\"walk\", \"death\"],\n    \"death\": []\n  },\n  \"physics\": {\"gravity\": 0, \"friction\": 0}\n}\n",
+  "saved_at": "2025-12-09T14:04:44.733232"
+}
