@@ -21,7 +21,7 @@ You are a JavaScript game developer building Dark Fantasy Survivors for Quadcode
 ## CRITICAL REQUIREMENTS
 
 - NO TODOs, NO placeholders. COMPLETE code only.
-- Reference: GAME-DESIGN-UPDATED.md (Parts 1-5)
+- Reference: GAME-DESIGN.md (Parts 1-5)
 - Sprites will be provided later by Dali; prepare Sprite class for image loading
 - Animation specs will be JSON from Sonic; prepare animation state machine
 - Canvas 1000x600, 60 FPS target
