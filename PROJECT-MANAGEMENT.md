@@ -9,7 +9,7 @@
 ### 1. PRE-GENERATION PHASE (Before agents work)
 
 #### 1.1 Review Requirements
-- [ ] Read `GAME-DESIGN-UPDATED.md` completely
+- [ ] Read `GAME-DESIGN.md` completely
 - [ ] Understand 3 characters, 9 weapons, 10 enemy types
 - [ ] Know animation states: idle, run, attack, hit, death
 - [ ] Confirm sprite sheet format: 48×48 per frame, PNG indexed color
@@ -28,9 +28,9 @@ mkdir sprites/
 mkdir animations/
 touch game.js
 touch index.html
-touch GAME-DESIGN-UPDATED.md
-touch PROMPTS-UPDATED.md
-touch README-UPDATED.md
+touch GAME-DESIGN.md
+touch PROMPTS.md
+touch README.md
 ```
 
 #### 1.4 Prepare Backup Plan
@@ -182,9 +182,9 @@ touch README-UPDATED.md
 souls-of-abyss/
 ├── game.js                    ✓ 1200 lines, no TODOs
 ├── index.html                 ✓ 600 lines, Canvas setup
-├── GAME-DESIGN-UPDATED.md     ✓ Design doc
-├── PROMPTS-UPDATED.md         ✓ All 4 prompts
-├── README-UPDATED.md          ✓ User guide
+├── GAME-DESIGN.md     ✓ Design doc
+├── PROMPTS.md         ✓ All 4 prompts
+├── README.md          ✓ User guide
 ├── sprites/
 │   ├── knight.png             ✓ Character
 │   ├── witch.png              ✓ Character
@@ -494,9 +494,9 @@ Final delivery: ~75-120 minutes total
 - [ ] HUD readable
 
 **Documentation:**
-- [ ] README-UPDATED.md complete
-- [ ] PROMPTS-UPDATED.md accurate
-- [ ] GAME-DESIGN-UPDATED.md matches implementation
+- [ ] README.md complete
+- [ ] PROMPTS.md accurate
+- [ ] GAME-DESIGN.md matches implementation
 - [ ] Comments in code clear
 
 **When all ✓:** APPROVED FOR RELEASE
@@ -558,9 +558,9 @@ Lead: Many (Team Lead)
 
 ## 10. REFERENCE DOCUMENTS
 
-- **GAME-DESIGN-UPDATED.md** — Design specifications
-- **PROMPTS-UPDATED.md** — Agent prompts
-- **README-UPDATED.md** — User guide
+- **GAME-DESIGN.md** — Design specifications
+- **PROMPTS.md** — Agent prompts
+- **README.md** — User guide
 
 ---
 
