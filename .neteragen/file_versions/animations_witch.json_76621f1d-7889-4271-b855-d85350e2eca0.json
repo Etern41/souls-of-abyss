@@ -1,0 +1,16 @@
+{
+  "file_name": "animations/witch.json",
+  "revision_id": "76621f1d-7889-4271-b855-d85350e2eca0",
+  "metadata": {
+    "timestamp": "2025-12-09T14:03:49.533024",
+    "type": "cache_version",
+    "source": "ToolTextFileEdit",
+    "size": 739,
+    "is_reverted": false,
+    "git_branch_name": "",
+    "agent_name": "Many",
+    "description": "add witch animation json"
+  },
+  "content": "{\n  \"entityType\": \"witch\",\n  \"spriteSize\": 48,\n  \"animations\": {\n    \"idle\": {\"frameCount\": 8, \"frameTime\": 0.25, \"loop\": true, \"nextState\": \"idle\"},\n    \"run\": {\"frameCount\": 4, \"frameTime\": 0.15, \"loop\": true, \"nextState\": \"run\"},\n    \"attack\": {\"frameCount\": 4, \"frameTime\": 0.15, \"loop\": false, \"nextState\": \"idle\", \"damageFrame\": 2},\n    \"hit\": {\"frameCount\": 2, \"frameTime\": 0.15, \"loop\": false, \"nextState\": \"idle\"},\n    \"death\": {\"frameCount\": 6, \"frameTime\": 0.2, \"loop\": false, \"nextState\": \"death\"}\n  },\n  \"transitions\": {\n    \"idle\": [\"run\", \"attack\", \"hit\", \"death\"],\n    \"run\": [\"idle\", \"attack\", \"hit\", \"death\"],\n    \"attack\": [\"idle\"],\n    \"hit\": [\"idle\"],\n    \"death\": []\n  },\n  \"physics\": {\"gravity\": 0, \"friction\": 0}\n}\n",
+  "saved_at": "2025-12-09T14:03:49.533024"
+}

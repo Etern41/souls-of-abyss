@@ -1,0 +1,33 @@
+{
+  "file_name": "animations/ancient_one.json",
+  "revisions": [
+    {
+      "revision_id": "a3574f11-cc94-4f4d-8d93-78091ec68549",
+      "metadata": {
+        "timestamp": "2025-12-09T14:05:05.341202",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 672,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "add ancient one animation"
+      },
+      "saved_at": "2025-12-09T14:05:05.346691"
+    },
+    {
+      "revision_id": "1edd1db5-4697-4cf0-923c-65034cd59779",
+      "metadata": {
+        "timestamp": "2025-12-09T14:05:05.328672",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 0,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": null
+      },
+      "saved_at": "2025-12-09T14:05:05.332674"
+    }
+  ]
+}

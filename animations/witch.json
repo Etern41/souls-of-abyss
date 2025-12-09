@@ -1,0 +1,19 @@
+{
+  "entityType": "witch",
+  "spriteSize": 48,
+  "animations": {
+    "idle": {"frameCount": 8, "frameTime": 0.25, "loop": true, "nextState": "idle"},
+    "run": {"frameCount": 4, "frameTime": 0.15, "loop": true, "nextState": "run"},
+    "attack": {"frameCount": 4, "frameTime": 0.15, "loop": false, "nextState": "idle", "damageFrame": 2},
+    "hit": {"frameCount": 2, "frameTime": 0.15, "loop": false, "nextState": "idle"},
+    "death": {"frameCount": 6, "frameTime": 0.2, "loop": false, "nextState": "death"}
+  },
+  "transitions": {
+    "idle": ["run", "attack", "hit", "death"],
+    "run": ["idle", "attack", "hit", "death"],
+    "attack": ["idle"],
+    "hit": ["idle"],
+    "death": []
+  },
+  "physics": {"gravity": 0, "friction": 0}
+}

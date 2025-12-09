@@ -1,0 +1,16 @@
+{
+  "file_name": "animations/void_rift.json",
+  "revision_id": "8207c8bc-5c0f-4fd2-8c37-60f681dc93be",
+  "metadata": {
+    "timestamp": "2025-12-09T14:04:55.496823",
+    "type": "cache_version",
+    "source": "ToolTextFileEdit",
+    "size": 670,
+    "is_reverted": false,
+    "git_branch_name": "",
+    "agent_name": "Many",
+    "description": "add void rift animation"
+  },
+  "content": "{\n  \"entityType\": \"void_rift\",\n  \"spriteSize\": 96,\n  \"animations\": {\n    \"idle\": {\"frameCount\": 2, \"frameTime\": 0.5, \"loop\": true, \"nextState\": \"idle\"},\n    \"attack\": {\"frameCount\": 1, \"frameTime\": 0.8, \"loop\": false, \"nextState\": \"idle\", \"damageFrame\": 0},\n    \"phase_change\": {\"frameCount\": 1, \"frameTime\": 1, \"loop\": false, \"nextState\": \"idle\"},\n    \"death\": {\"frameCount\": 1, \"frameTime\": 2, \"loop\": false, \"nextState\": \"death\"}\n  },\n  \"transitions\": {\n    \"idle\": [\"attack\", \"phase_change\", \"death\"],\n    \"attack\": [\"idle\", \"phase_change\", \"death\"],\n    \"phase_change\": [\"idle\", \"attack\", \"death\"],\n    \"death\": []\n  },\n  \"physics\": {\"gravity\": 0, \"friction\": 0}\n}\n",
+  "saved_at": "2025-12-09T14:04:55.498825"
+}

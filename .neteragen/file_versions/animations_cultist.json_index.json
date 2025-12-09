@@ -1,0 +1,33 @@
+{
+  "file_name": "animations/cultist.json",
+  "revisions": [
+    {
+      "revision_id": "b8d3feac-8670-48f8-8508-2c6feb73a819",
+      "metadata": {
+        "timestamp": "2025-12-09T14:04:11.441354",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 499,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "add cultist animation"
+      },
+      "saved_at": "2025-12-09T14:04:11.445926"
+    },
+    {
+      "revision_id": "381c5444-1a16-42de-a68f-2f9eca7551d1",
+      "metadata": {
+        "timestamp": "2025-12-09T14:04:11.426769",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 0,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": null
+      },
+      "saved_at": "2025-12-09T14:04:11.430766"
+    }
+  ]
+}

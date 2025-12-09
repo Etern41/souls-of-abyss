@@ -1,0 +1,33 @@
+{
+  "file_name": "animations/witch.json",
+  "revisions": [
+    {
+      "revision_id": "76621f1d-7889-4271-b855-d85350e2eca0",
+      "metadata": {
+        "timestamp": "2025-12-09T14:03:49.533024",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 739,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "add witch animation json"
+      },
+      "saved_at": "2025-12-09T14:03:49.534028"
+    },
+    {
+      "revision_id": "47df1d94-14c3-4858-b49c-74cf66989687",
+      "metadata": {
+        "timestamp": "2025-12-09T14:03:49.526007",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 0,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": null
+      },
+      "saved_at": "2025-12-09T14:03:49.530519"
+    }
+  ]
+}

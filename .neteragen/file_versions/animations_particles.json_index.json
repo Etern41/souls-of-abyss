@@ -1,0 +1,33 @@
+{
+  "file_name": "animations/particles.json",
+  "revisions": [
+    {
+      "revision_id": "d3869f3c-a233-4f72-8177-92b7502dad9b",
+      "metadata": {
+        "timestamp": "2025-12-09T14:05:12.042653",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 384,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "add particles animation"
+      },
+      "saved_at": "2025-12-09T14:05:12.043653"
+    },
+    {
+      "revision_id": "4af1c2d6-aa8e-439c-a423-da7b44da2741",
+      "metadata": {
+        "timestamp": "2025-12-09T14:05:12.038645",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 0,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": null
+      },
+      "saved_at": "2025-12-09T14:05:12.039652"
+    }
+  ]
+}

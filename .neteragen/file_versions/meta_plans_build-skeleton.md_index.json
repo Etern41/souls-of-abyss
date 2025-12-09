@@ -1,0 +1,159 @@
+{
+  "file_name": "meta/plans/build-skeleton.md",
+  "revisions": [
+    {
+      "revision_id": "bd3defcd-6ba8-4c47-9290-9b2480a4b49b",
+      "metadata": {
+        "timestamp": "2025-12-09T14:07:45.087969",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 1486,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "add smoke test plan"
+      },
+      "saved_at": "2025-12-09T14:07:45.092988"
+    },
+    {
+      "revision_id": "13612fbf-8ff3-4b98-9a5b-7748d2b7cc34",
+      "metadata": {
+        "timestamp": "2025-12-09T14:07:08.813930",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 1066,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "mark structure verification complete"
+      },
+      "saved_at": "2025-12-09T14:07:08.819985"
+    },
+    {
+      "revision_id": "d927b5ea-8f65-4eb3-91f9-da7dc3021be2",
+      "metadata": {
+        "timestamp": "2025-12-09T14:06:34.181382",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 1017,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "start phase3 verification"
+      },
+      "saved_at": "2025-12-09T14:06:34.189922"
+    },
+    {
+      "revision_id": "e67e960f-b731-4f93-bd7f-d630da240a48",
+      "metadata": {
+        "timestamp": "2025-12-09T14:05:59.534525",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 1017,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "mark animation task done"
+      },
+      "saved_at": "2025-12-09T14:05:59.541040"
+    },
+    {
+      "revision_id": "97021b04-88cd-4043-9039-8e0821d47925",
+      "metadata": {
+        "timestamp": "2025-12-09T14:02:08.544581",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 1017,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "mark sprite step done"
+      },
+      "saved_at": "2025-12-09T14:02:08.545579"
+    },
+    {
+      "revision_id": "a3361ea9-e4da-467b-83b9-d40d8471fe96",
+      "metadata": {
+        "timestamp": "2025-12-09T13:58:29.612162",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 1017,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "update plan after index html"
+      },
+      "saved_at": "2025-12-09T13:58:29.618186"
+    },
+    {
+      "revision_id": "34c97672-df97-4423-8ed9-aab4aa9f5868",
+      "metadata": {
+        "timestamp": "2025-12-09T13:54:20.589941",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 1017,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "mark prompt2 in progress"
+      },
+      "saved_at": "2025-12-09T13:54:20.591446"
+    },
+    {
+      "revision_id": "baecd98f-8d12-4c49-a5e5-8823791e53ee",
+      "metadata": {
+        "timestamp": "2025-12-09T13:52:46.429899",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 1017,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "Update skeleton plan after game.js completion"
+      },
+      "saved_at": "2025-12-09T13:52:46.432927"
+    },
+    {
+      "revision_id": "566b4063-f84b-4ea7-9149-cb4e057dc33c",
+      "metadata": {
+        "timestamp": "2025-12-09T13:41:44.134704",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 991,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "update plan progress"
+      },
+      "saved_at": "2025-12-09T13:41:44.137219"
+    },
+    {
+      "revision_id": "623e9e5a-81b0-4286-8b39-f8e0f78cdfd4",
+      "metadata": {
+        "timestamp": "2025-12-09T13:41:38.317855",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 991,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "create build plan"
+      },
+      "saved_at": "2025-12-09T13:41:38.330413"
+    },
+    {
+      "revision_id": "fa498c1a-3017-4634-b912-59793beb810c",
+      "metadata": {
+        "timestamp": "2025-12-09T13:41:38.306339",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 0,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": null
+      },
+      "saved_at": "2025-12-09T13:41:38.309344"
+    }
+  ]
+}

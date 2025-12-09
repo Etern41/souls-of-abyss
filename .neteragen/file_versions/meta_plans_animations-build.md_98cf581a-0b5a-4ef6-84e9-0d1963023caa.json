@@ -1,0 +1,16 @@
+{
+  "file_name": "meta/plans/animations-build.md",
+  "revision_id": "98cf581a-0b5a-4ef6-84e9-0d1963023caa",
+  "metadata": {
+    "timestamp": "2025-12-09T14:03:09.801845",
+    "type": "cache_version",
+    "source": "ToolTextFileEdit",
+    "size": 1441,
+    "is_reverted": false,
+    "git_branch_name": "",
+    "agent_name": "Many",
+    "description": "create animation plan"
+  },
+  "content": "---\nSECTION_ID: plans.animations.build\nTYPE: plan\nSTATUS: in_progress\nPRIORITY: high\n---\n\n# Animation JSON Pack Creation\n\nGoal: Produce the 14 animation spec files defined in PROMPTS.md (knight, witch, rogue, zombie, spectre, cultist, vampire, wraith, corrupted_knight, warden, shadow_lord, void_rift, ancient_one, particles) for the Souls of the Abyss build skeleton.\n\n## Task Breakdown\n1. **Review requirements** – Confirm template expectations from PROMPTS.md and repo context. _(done)_\n2. **Define per-entity parameters** – Capture frame counts, frame times, loop flags, transitions, sprite sizes. _(in_progress)_\n3. **Draft JSON files** – Generate valid JSON for each entity per template. _(pending)_\n4. **Create animations/ folder files** – Save 14 JSON specs with correct naming and structure. _(pending)_\n5. **Self-check** – Validate JSON syntax, ensure consistency with sprite sheets and timings. _(pending)_\n6. **Update build checklist** – Mark Sonic deliverable complete in build plan once files verified. _(pending)_\n\n## Notes\n- Characters: include idle/run/attack/hit/death (rogue has dodge). Witch attack named cast per prompt.\n- Regular enemies: walk (aka shamble/float), attack, death states only.\n- Bosses: idle, attack, phase_change, death; spriteSize 96.\n- Particles: slash/explosion/spark/blood/glow with simple animation objects.\n- Maintain transition maps exactly per state logic described in prompt; no unused states.\n",
+  "saved_at": "2025-12-09T14:03:09.801845"
+}

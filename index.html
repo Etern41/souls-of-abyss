@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Souls of the Abyss</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --accent: #c41e3a;
+      --bg: #0a0a0f;
+      --panel: rgba(10, 10, 15, 0.75);
+      --text: #f4f4f4;
+      --muted: #8c92ac;
+      --border: rgba(196, 30, 58, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1a0327, #0a0a0f 55%);
+      color: var(--text);
+      font-family: "Segoe UI", "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .app-shell {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      width: 100%;
+      max-width: 1400px;
+      align-items: flex-start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      flex: 1 1 320px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .panel h1 {
+      margin: 0 0 10px;
+      font-size: 1.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .panel p {
+      margin-top: 0;
+      color: var(--muted);
+    }
+
+    .character-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .character-buttons button {
+      flex: 1 1 90px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(196, 30, 58, 0.15);
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+    }
+
+    .character-buttons button:hover,
+    .character-buttons button.active {
+      background: var(--accent);
+      box-shadow: 0 0 14px rgba(196, 30, 58, 0.5);
+    }
+
+    canvas {
+      display: block;
+      border-radius: 18px;
+      border: 2px solid var(--border);
+      max-width: 100%;
+      background: #030205;
+    }
+
+    .canvas-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    #hud {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 240px;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .hud-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .hud-row span:last-child {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .health-bar {
+      margin-top: 10px;
+    }
+
+    .health-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+    }
+
+    .health-bar-track {
+      margin-top: 6px;
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+
+    .health-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff4d6d, #c41e3a);
+      transition: width 0.15s ease;
+    }
+
+    .controls-hint {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .controls-hint code {
+      color: var(--accent);
+      background: rgba(196, 30, 58, 0.12);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .death-modal {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 99;
+      transition: opacity 0.2s ease;
+    }
+
+    .death-modal.hidden {
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .death-card {
+      background: #150312;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      width: min(90vw, 420px);
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(196, 30, 58, 0.35);
+    }
+
+    .death-card h2 {
+      margin: 0 0 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .death-card p {
+      margin: 6px 0;
+      color: var(--muted);
+    }
+
+    .death-card strong {
+      color: var(--accent);
+    }
+
+    #restartBtn {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: none;
+      background: var(--accent);
+      color: var(--text);
+      font-size: 1rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      box-shadow: 0 15px 35px rgba(196, 30, 58, 0.35);
+    }
+
+    .sprite-preload {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .sprite-preload img {
+      display: none;
+    }
+
+    @media (max-width: 1200px) {
+      body {
+        padding: 10px;
+      }
+
+      .canvas-wrapper {
+        width: 100%;
+      }
+
+      canvas {
+        width: 100%;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <section class="panel">
+      <h1>Souls of the Abyss</h1>
+      <p>Choose a champion to begin the assault. Each hero carries unique stats and signature abilities.</p>
+      <div class="character-buttons">
+        <button type="button" data-char="knight" onclick="selectChar('knight')">Knight</button>
+        <button type="button" data-char="witch" onclick="selectChar('witch')">Witch</button>
+        <button type="button" data-char="rogue" onclick="selectChar('rogue')">Rogue</button>
+      </div>
+      <div class="controls-hint">
+        <div><strong>Controls</strong></div>
+        <div><code>WASD</code> to move</div>
+        <div><code>E</code> for Godsayer Sword (costs Essence)</div>
+      </div>
+    </section>
+
+    <section class="panel canvas-wrapper">
+      <canvas id="gameCanvas" width="1000" height="600" aria-label="Souls of the Abyss field"></canvas>
+      <div id="hud">
+        <div class="hud-row"><span>Time</span><span id="hudTime">0.0s</span></div>
+        <div class="hud-row"><span>Level</span><span id="hudLevel">1</span></div>
+        <div class="hud-row"><span>Armor</span><span id="hudArmor">0</span></div>
+        <div class="hud-row"><span>Wave</span><span id="hudWave">0</span></div>
+        <div class="hud-row"><span>Enemies</span><span id="hudEnemies">0</span></div>
+        <div class="hud-row"><span>Essence</span><span id="hudEssence">0 (+0/5)</span></div>
+        <div class="hud-row"><span>Boss Timer</span><span id="hudBoss">120.0s</span></div>
+        <div class="health-bar">
+          <div class="health-bar-label">
+            <span>HP</span>
+            <span id="hudHealthText">0 / 0</span>
+          </div>
+          <div class="health-bar-track">
+            <div id="hudHealthFill" class="health-bar-fill"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="deathScreen" class="death-modal hidden" role="dialog" aria-modal="true" aria-labelledby="deathTitle">
+    <div class="death-card">
+      <h2 id="deathTitle">Fallen Champion</h2>
+      <p>Survived: <strong id="statTime">0.0s</strong></p>
+      <p>Kills: <strong id="statKills">0</strong></p>
+      <p>Level Reached: <strong id="statLevel">1</strong></p>
+      <p>Essence Collected: <strong id="statEssence">0</strong></p>
+      <button id="restartBtn" type="button">Restart</button>
+    </div>
+  </div>
+
+  <div class="sprite-preload" aria-hidden="true">
+    <img id="spriteKnight" src="sprites/knight.png" alt="Knight sprite" />
+    <img id="spriteWitch" src="sprites/witch.png" alt="Witch sprite" />
+    <img id="spriteRogue" src="sprites/rogue.png" alt="Rogue sprite" />
+    <img id="spriteZombie" src="sprites/zombie.png" alt="Zombie sprite" />
+    <img id="spriteSpectre" src="sprites/spectre.png" alt="Spectre sprite" />
+    <img id="spriteCultist" src="sprites/cultist.png" alt="Cultist sprite" />
+    <img id="spriteVampire" src="sprites/vampire.png" alt="Vampire sprite" />
+    <img id="spriteWraith" src="sprites/wraith.png" alt="Wraith sprite" />
+    <img id="spriteCorruptedKnight" src="sprites/corrupted_knight.png" alt="Corrupted Knight sprite" />
+    <img id="spriteWarden" src="sprites/warden.png" alt="Warden sprite" />
+    <img id="spriteShadowLord" src="sprites/shadow_lord.png" alt="Shadow Lord sprite" />
+    <img id="spriteVoidRift" src="sprites/void_rift.png" alt="Void Rift sprite" />
+    <img id="spriteAncientOne" src="sprites/ancient_one.png" alt="Ancient One sprite" />
+    <img id="spriteParticles" src="sprites/particles.png" alt="Particles sprite" />
+    <img id="spriteMap" src="sprites/map.png" alt="Map sprite" />
+  </div>
+
+  <script src="game.js"></script>
+  <script>
+    (function () {
+      const spriteIds = [
+        "spriteKnight",
+        "spriteWitch",
+        "spriteRogue",
+        "spriteZombie",
+        "spriteSpectre",
+        "spriteCultist",
+        "spriteVampire",
+        "spriteWraith",
+        "spriteCorruptedKnight",
+        "spriteWarden",
+        "spriteShadowLord",
+        "spriteVoidRift",
+        "spriteAncientOne",
+        "spriteParticles",
+        "spriteMap"
+      ];
+
+      const hudRefs = {
+        time: document.getElementById("hudTime"),
+        level: document.getElementById("hudLevel"),
+        armor: document.getElementById("hudArmor"),
+        wave: document.getElementById("hudWave"),
+        enemies: document.getElementById("hudEnemies"),
+        essence: document.getElementById("hudEssence"),
+        boss: document.getElementById("hudBoss"),
+        healthText: document.getElementById("hudHealthText"),
+        healthFill: document.getElementById("hudHealthFill")
+      };
+
+      const statRefs = {
+        time: document.getElementById("statTime"),
+        kills: document.getElementById("statKills"),
+        level: document.getElementById("statLevel"),
+        essence: document.getElementById("statEssence")
+      };
+
+      const deathModal = document.getElementById("deathScreen");
+      const restartBtn = document.getElementById("restartBtn");
+      const characterButtons = document.querySelectorAll(".character-buttons button");
+
+      const pressedKeys = new Set();
+      const movementKeys = new Set(["w", "a", "s", "d"]);
+      let hudLoopStarted = false;
+      let currentCharacter = null;
+
+      function loadSprites() {
+        spriteIds.forEach((id) => {
+          const img = document.getElementById(id);
+          if (!img) return;
+          if (!img.complete) {
+            img.loading = "eager";
+          }
+        });
+      }
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function refreshHUD() {
+        const state = window.gameState;
+        if (!state || !state.player) {
+          hudRefs.time.textContent = "0.0s";
+          hudRefs.level.textContent = "-";
+          hudRefs.armor.textContent = "-";
+          hudRefs.wave.textContent = "-";
+          hudRefs.enemies.textContent = "-";
+          hudRefs.essence.textContent = "0 (+0/5)";
+          hudRefs.boss.textContent = "120.0s";
+          hudRefs.healthText.textContent = "0 / 0";
+          hudRefs.healthFill.style.width = "0%";
+          return;
+        }
+
+        const enemiesAlive = state.enemies.filter((enemy) => enemy.alive).length;
+        const bossCountdown = clamp(120 - state.bossTimer, 0, 120);
+        const player = state.player;
+        const hpRatio = player.maxHealth > 0 ? player.health / player.maxHealth : 0;
+
+        hudRefs.time.textContent = `${state.gameTime.toFixed(1)}s`;
+        hudRefs.level.textContent = player.level;
+        hudRefs.armor.textContent = player.armor;
+        hudRefs.wave.textContent = state.waveNumber;
+        hudRefs.enemies.textContent = enemiesAlive;
+        hudRefs.essence.textContent = `${state.weaponCharges} (+${state.essenceCollected}/5)`;
+        hudRefs.boss.textContent = `${bossCountdown.toFixed(1)}s`;
+        hudRefs.healthText.textContent = `${Math.max(player.health, 0).toFixed(0)} / ${player.maxHealth}`;
+        hudRefs.healthFill.style.width = `${clamp(hpRatio, 0, 1) * 100}%`;
+      }
+
+      function animateHUD() {
+        refreshHUD();
+        window.requestAnimationFrame(animateHUD);
+      }
+
+      function ensureHudLoop() {
+        if (!hudLoopStarted) {
+          hudLoopStarted = true;
+          animateHUD();
+        }
+      }
+
+      function setActiveCharacterButton(character) {
+        characterButtons.forEach((btn) => {
+          if (btn.dataset.char === character) {
+            btn.classList.add("active");
+          } else {
+            btn.classList.remove("active");
+          }
+        });
+      }
+
+      function selectChar(character) {
+        if (typeof window.initGame === "function") {
+          window.initGame(character);
+        }
+        currentCharacter = character;
+        setActiveCharacterButton(character);
+        hideDeathScreen();
+        ensureHudLoop();
+      }
+
+      function hideDeathScreen() {
+        if (!deathModal.classList.contains("hidden")) {
+          deathModal.classList.add("hidden");
+        }
+      }
+
+      function showDeathScreen(state) {
+        if (!state) return;
+        statRefs.time.textContent = `${state.gameTime.toFixed(1)}s`;
+        statRefs.kills.textContent = state.enemiesKilled;
+        statRefs.level.textContent = state.player ? state.player.level : 0;
+        statRefs.essence.textContent = state.weaponCharges;
+        deathModal.classList.remove("hidden");
+      }
+
+      function restartGame() {
+        if (currentCharacter) {
+          selectChar(currentCharacter);
+        }
+      }
+
+      function syncMovementKey(key, isDown) {
+        if (typeof window.setKeyState === "function") {
+          window.setKeyState(key, isDown);
+        } else if (window.gameState && window.gameState.keys && key in window.gameState.keys) {
+          window.gameState.keys[key] = isDown;
+        }
+      }
+
+      function setEssenceKey(isDown) {
+        if (window.gameState && window.gameState.keys) {
+          window.gameState.keys.e = isDown;
+        }
+      }
+
+      function tryGodsayer() {
+        const state = window.gameState;
+        if (!state || !state.player || !state.alive) {
+          return;
+        }
+        if (state.weaponCharges <= 0) {
+          return;
+        }
+        if (typeof window.triggerGodsayerSword === "function") {
+          window.triggerGodsayerSword();
+        }
+      }
+
+      document.addEventListener("keydown", (event) => {
+        const key = event.key.toLowerCase();
+        if (movementKeys.has(key)) {
+          event.preventDefault();
+          if (!pressedKeys.has(key)) {
+            pressedKeys.add(key);
+            syncMovementKey(key, true);
+          }
+        } else if (key === "e") {
+          event.preventDefault();
+          if (!pressedKeys.has("e")) {
+            pressedKeys.add("e");
+            setEssenceKey(true);
+            tryGodsayer();
+          }
+        }
+      });
+
+      document.addEventListener("keyup", (event) => {
+        const key = event.key.toLowerCase();
+        if (movementKeys.has(key)) {
+          pressedKeys.delete(key);
+          syncMovementKey(key, false);
+        } else if (key === "e") {
+          pressedKeys.delete("e");
+          setEssenceKey(false);
+        }
+      });
+
+      restartBtn.addEventListener("click", restartGame);
+
+      window.loadSprites = loadSprites;
+      window.selectChar = selectChar;
+      window.updateHUD = refreshHUD;
+      window.showDeathScreen = showDeathScreen;
+
+      loadSprites();
+      ensureHudLoop();
+    })();
+  </script>
+</body>
+</html>

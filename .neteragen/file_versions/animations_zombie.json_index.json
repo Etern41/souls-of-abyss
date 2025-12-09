@@ -1,0 +1,33 @@
+{
+  "file_name": "animations/zombie.json",
+  "revisions": [
+    {
+      "revision_id": "a19ed78a-2d6a-4e00-900c-d6c9e8138dc1",
+      "metadata": {
+        "timestamp": "2025-12-09T14:04:03.566504",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 498,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": "add zombie animation"
+      },
+      "saved_at": "2025-12-09T14:04:03.567506"
+    },
+    {
+      "revision_id": "7b784f69-b766-474b-b8bb-5da071fd5f61",
+      "metadata": {
+        "timestamp": "2025-12-09T14:04:03.548293",
+        "type": "cache_version",
+        "source": "ToolTextFileEdit",
+        "size": 0,
+        "is_reverted": false,
+        "git_branch_name": "",
+        "agent_name": "Many",
+        "description": null
+      },
+      "saved_at": "2025-12-09T14:04:03.559471"
+    }
+  ]
+}

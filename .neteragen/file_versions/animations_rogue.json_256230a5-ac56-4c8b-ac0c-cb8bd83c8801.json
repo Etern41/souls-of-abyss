@@ -1,0 +1,16 @@
+{
+  "file_name": "animations/rogue.json",
+  "revision_id": "256230a5-ac56-4c8b-ac0c-cb8bd83c8801",
+  "metadata": {
+    "timestamp": "2025-12-09T14:03:55.926486",
+    "type": "cache_version",
+    "source": "ToolTextFileEdit",
+    "size": 871,
+    "is_reverted": false,
+    "git_branch_name": "",
+    "agent_name": "Many",
+    "description": "add rogue animation json"
+  },
+  "content": "{\n  \"entityType\": \"rogue\",\n  \"spriteSize\": 48,\n  \"animations\": {\n    \"idle\": {\"frameCount\": 8, \"frameTime\": 0.15, \"loop\": true, \"nextState\": \"idle\"},\n    \"run\": {\"frameCount\": 3, \"frameTime\": 0.1, \"loop\": true, \"nextState\": \"run\"},\n    \"attack\": {\"frameCount\": 2, \"frameTime\": 0.1, \"loop\": false, \"nextState\": \"idle\", \"damageFrame\": 1},\n    \"dodge\": {\"frameCount\": 4, \"frameTime\": 0.12, \"loop\": false, \"nextState\": \"run\"},\n    \"hit\": {\"frameCount\": 2, \"frameTime\": 0.12, \"loop\": false, \"nextState\": \"idle\"},\n    \"death\": {\"frameCount\": 4, \"frameTime\": 0.1, \"loop\": false, \"nextState\": \"death\"}\n  },\n  \"transitions\": {\n    \"idle\": [\"run\", \"attack\", \"dodge\", \"hit\", \"death\"],\n    \"run\": [\"idle\", \"attack\", \"dodge\", \"hit\", \"death\"],\n    \"attack\": [\"idle\"],\n    \"dodge\": [\"run\", \"idle\"],\n    \"hit\": [\"idle\"],\n    \"death\": []\n  },\n  \"physics\": {\"gravity\": 0, \"friction\": 0}\n}\n",
+  "saved_at": "2025-12-09T14:03:55.927991"
+}

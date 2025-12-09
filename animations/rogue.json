@@ -1,0 +1,21 @@
+{
+  "entityType": "rogue",
+  "spriteSize": 48,
+  "animations": {
+    "idle": {"frameCount": 8, "frameTime": 0.15, "loop": true, "nextState": "idle"},
+    "run": {"frameCount": 3, "frameTime": 0.1, "loop": true, "nextState": "run"},
+    "attack": {"frameCount": 2, "frameTime": 0.1, "loop": false, "nextState": "idle", "damageFrame": 1},
+    "dodge": {"frameCount": 4, "frameTime": 0.12, "loop": false, "nextState": "run"},
+    "hit": {"frameCount": 2, "frameTime": 0.12, "loop": false, "nextState": "idle"},
+    "death": {"frameCount": 4, "frameTime": 0.1, "loop": false, "nextState": "death"}
+  },
+  "transitions": {
+    "idle": ["run", "attack", "dodge", "hit", "death"],
+    "run": ["idle", "attack", "dodge", "hit", "death"],
+    "attack": ["idle"],
+    "dodge": ["run", "idle"],
+    "hit": ["idle"],
+    "death": []
+  },
+  "physics": {"gravity": 0, "friction": 0}
+}
