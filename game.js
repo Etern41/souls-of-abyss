@@ -52,8 +52,8 @@ class Vector2 {
   }
 }
 
-const CANVAS_WIDTH = 1000;
-const CANVAS_HEIGHT = 600;
+let CANVAS_WIDTH = 1000;
+let CANVAS_HEIGHT = 600;
 const TARGET_DELTA = 1 / 60;
 const DEG_TO_RAD = Math.PI / 180;
 const DEFAULT_ANIMATION = {
@@ -65,6 +65,13 @@ const DEFAULT_ANIMATION = {
     death: { frameCount: 1, frameTime: 1, loop: false }
   }
 };
+const MAP_IMAGE = new Image();
+MAP_IMAGE.src = 'sprites/map.png';
+let mapLoaded = false;
+MAP_IMAGE.onload = () => {
+  mapLoaded = true;
+};
+const SURVIVAL_TARGET = 600; // seconds to "win"
 
 const CHARACTER_DEFS = {
   knight: {
@@ -73,7 +80,9 @@ const CHARACTER_DEFS = {
     range: 110,
     speed: 200,
     armor: 5,
-    spriteSize: 48
+    spriteSize: 56,
+    aura: '#4da3ff',
+    playstyle: 'melee'
   },
   witch: {
     maxHealth: 70,
@@ -81,7 +90,9 @@ const CHARACTER_DEFS = {
     range: 140,
     speed: 180,
     armor: 2,
-    spriteSize: 48
+    spriteSize: 56,
+    aura: '#a66bff',
+    playstyle: 'ranged'
   },
   rogue: {
     maxHealth: 85,
@@ -89,19 +100,21 @@ const CHARACTER_DEFS = {
     range: 90,
     speed: 250,
     armor: 3,
-    spriteSize: 48,
-    dodgeChance: 0.1
+    spriteSize: 56,
+    dodgeChance: 0.1,
+    aura: '#ff7b5f',
+    playstyle: 'assassin'
   }
 };
 
 const ENEMY_DEFS = {
-  zombie: { health: 20, damage: 5, speed: 80, color: '#9da3a4', elite: false },
-  spectre: { health: 18, damage: 4, speed: 90, color: '#4db1e8', elite: false },
-  cultist: { health: 22, damage: 6, speed: 100, color: '#a347d6', elite: false },
-  vampire: { health: 40, damage: 10, speed: 120, color: '#c41e3a', elite: true },
-  wraith: { health: 38, damage: 9, speed: 110, color: '#1a1a1f', elite: true },
-  corrupted_knight: { health: 50, damage: 15, speed: 60, color: '#4e5b6e', elite: true },
-  warden: { health: 42, damage: 11, speed: 100, color: '#0ad1ff', elite: true }
+  zombie: { health: 20, damage: 5, speed: 80, color: '#9da3a4', elite: false, move: 'walk' },
+  spectre: { health: 18, damage: 4, speed: 90, color: '#4db1e8', elite: false, move: 'spiral' },
+  cultist: { health: 22, damage: 6, speed: 100, color: '#a347d6', elite: false, move: 'walk' },
+  vampire: { health: 40, damage: 10, speed: 120, color: '#c41e3a', elite: true, move: 'fly' },
+  wraith: { health: 38, damage: 9, speed: 110, color: '#1a1a1f', elite: true, move: 'fly' },
+  corrupted_knight: { health: 50, damage: 15, speed: 60, color: '#4e5b6e', elite: true, move: 'walk' },
+  warden: { health: 42, damage: 11, speed: 100, color: '#0ad1ff', elite: true, move: 'spiral' }
 };
 
 const BOSS_DEFS = {
@@ -125,6 +138,15 @@ const LEVEL_WEAPON_UNLOCK = [
   'ReapersScythe',
   'BloodmoonLance',
   'VoidSummoner'
+];
+
+const LEVEL_UP_POOL = [
+  { id: 'dmg', title: '+15% Damage', desc: 'All weapons hit harder' },
+  { id: 'speed', title: '+10% Move Speed', desc: 'Faster movement' },
+  { id: 'armor', title: '+1 Armor', desc: 'Reduces incoming damage' },
+  { id: 'heal', title: 'Recover 30% HP', desc: 'Instant heal' },
+  { id: 'essence', title: '+1 Essence Charge', desc: 'Cast Godsayer sooner' },
+  { id: 'firerate', title: '+10% Fire Rate', desc: 'Auto weapons fire quicker' }
 ];
 
 const spriteCache = {};
@@ -223,6 +245,16 @@ class Sprite {
   }
 
   draw(ctx, x, y, scale = 1, flipX = false) {
+    // Shadow for depth
+    const shadowWidth = this.frameWidth * scale * 0.9;
+    const shadowHeight = this.frameHeight * scale * 0.35;
+    ctx.save();
+    ctx.fillStyle = 'rgba(0,0,0,0.35)';
+    ctx.beginPath();
+    ctx.ellipse(x + (this.frameWidth * scale) * 0.5, y + this.frameHeight * scale * 0.9, shadowWidth * 0.6, shadowHeight, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
     if (this.imageLoaded && !this.imageFailed) {
       const animSpec = this.getAnimationSpec(this.currentState);
       const framesPerRow = Math.floor(this.image.width / this.frameWidth) || 1;
@@ -326,7 +358,7 @@ class Projectile {
     this.damage = config.damage;
     this.range = config.range;
     this.traveled = 0;
-    this.radius = config.radius || 6;
+    this.radius = config.radius || 7;
     this.pierce = config.pierce || 1;
     this.owner = config.owner;
     this.lifesteal = config.lifesteal || 0;
@@ -345,9 +377,44 @@ class Projectile {
 
   draw(ctx) {
     ctx.fillStyle = this.color;
+    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+    ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
     ctx.fill();
+    ctx.stroke();
+  }
+}
+
+class FXArc {
+  constructor(x, y, radius, angleStart, angleEnd, color, thickness = 12, lifetime = 0.35) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.angleStart = angleStart;
+    this.angleEnd = angleEnd;
+    this.color = color;
+    this.thickness = thickness;
+    this.remaining = lifetime;
+    this.lifetime = lifetime;
+  }
+
+  update(dt) {
+    this.remaining -= dt;
+  }
+
+  draw(ctx) {
+    if (this.remaining <= 0) {
+      return;
+    }
+    ctx.save();
+    ctx.lineWidth = this.thickness;
+    const alpha = Math.max(this.remaining / this.lifetime, 0);
+    ctx.strokeStyle = this.color + Math.floor(alpha * 255).toString(16).padStart(2, '0');
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, this.angleStart, this.angleEnd);
+    ctx.stroke();
+    ctx.restore();
   }
 }
 
@@ -430,6 +497,10 @@ class Enemy {
     this.deathTimer = 0;
     this.sprite = getSprite(type, this.definition.spriteSize || 48);
     this.sprite.colorFallback = this.definition.color;
+    this.attackDelay = isBoss ? 1 : 0.8;
+    this.attackTimer = 0;
+    const baseSize = this.definition.spriteSize || 48;
+    this.hitRadius = (baseSize * (this.isBoss ? 1.4 : 1)) * 0.35;
   }
 
   update(dt, player, multiplier) {
@@ -440,11 +511,14 @@ class Enemy {
     }
     const toPlayer = new Vector2(player.position.x - this.position.x, player.position.y - this.position.y);
     const distance = Math.max(toPlayer.length(), 0.0001);
-    const direction = toPlayer.clone().scale(1 / distance);
+    let direction = toPlayer.clone().scale(1 / distance);
     const effectiveSpeed = this.speed * multiplier;
-    if (this.type === 'wraith') {
-      const swirl = new Vector2(-direction.y, direction.x).scale(Math.sin(gameState.gameTime * 2) * 40);
+    if (this.definition.move === 'spiral') {
+      const swirl = new Vector2(-direction.y, direction.x).scale(Math.sin(gameState.gameTime * 3) * 0.6);
       direction.add(swirl).normalize();
+    } else if (this.definition.move === 'fly') {
+      const jitter = Vector2.fromAngle(Math.random() * Math.PI * 2, 0.2);
+      direction.add(jitter).normalize();
     }
     this.velocity = direction.clone().scale(effectiveSpeed);
     this.position.add(this.velocity.clone().scale(dt));
@@ -467,16 +541,17 @@ class Enemy {
 
   draw(ctx) {
     const size = this.definition.spriteSize || 48;
-    const drawX = this.position.x - size * 0.5;
-    const drawY = this.position.y - size * 0.5;
+    const scale = this.isBoss ? 2 : 1.15;
+    const drawX = this.position.x - size * 0.5 * scale;
+    const drawY = this.position.y - size * 0.5 * scale;
     this.sprite.update(TARGET_DELTA, this.state === 'death' ? 'death' : this.state === 'hit' ? 'hit' : 'run');
-    this.sprite.draw(ctx, drawX, drawY, this.isBoss ? 2 : 1);
+    this.sprite.draw(ctx, drawX, drawY, scale);
     if (this.alive) {
-      ctx.fillStyle = '#222';
-      ctx.fillRect(drawX, drawY - 10, size, 4);
+      ctx.fillStyle = 'rgba(0,0,0,0.35)';
+      ctx.fillRect(drawX, drawY - 12, size * scale, 5);
       ctx.fillStyle = '#e63946';
       const hpRatio = Math.max(this.health / this.maxHealth, 0);
-      ctx.fillRect(drawX, drawY - 10, size * hpRatio, 4);
+      ctx.fillRect(drawX, drawY - 12, size * scale * hpRatio, 5);
     }
   }
 }
@@ -506,9 +581,19 @@ class Player {
     this.weapons = [];
     this.manualWeapons = {};
     this.pendingUnlocks = LEVEL_WEAPON_UNLOCK.slice();
-    this.unlockWeapon('CursedBlade');
+    // Start weapons per playstyle
+    if (def.playstyle === 'melee') {
+      this.unlockWeapon('CursedBlade');
+    } else if (def.playstyle === 'ranged') {
+      this.unlockWeapon('ChaosOrb');
+    } else {
+      this.unlockWeapon('SoulreaverDagger');
+    }
     this.manualWeapons.GodsayerSword = new Weapon('GodsayerSword', WEAPON_CONFIGS.GodsayerSword);
     this.sprite.refreshAnimation();
+    this.radius = (def.spriteSize || 50) * 0.35;
+    this.bonusDamageMult = 1;
+    this.bonusSpeedMult = 1;
   }
 
   unlockWeapon(name) {
@@ -531,15 +616,13 @@ class Player {
     );
     if (input.length() > 0) {
       input.normalize();
-      this.velocity = input.clone().scale(this.speed);
+      this.velocity = input.clone().scale(this.speed * this.bonusSpeedMult);
       this.state = 'run';
     } else {
       this.velocity = new Vector2();
       this.state = 'idle';
     }
     this.position.add(this.velocity.clone().scale(dt));
-    this.position.x = Math.max(20, Math.min(CANVAS_WIDTH - 20, this.position.x));
-    this.position.y = Math.max(20, Math.min(CANVAS_HEIGHT - 20, this.position.y));
     this.weapons.forEach((weapon) => weapon.update(dt, this, state.enemies));
     if (this.killStreakActive) {
       this.killStreakTimer -= dt;
@@ -566,6 +649,7 @@ class Player {
 
   gainExperience(amount) {
     this.experience += amount;
+    let leveled = false;
     while (this.experience >= this.nextLevelExp) {
       this.experience -= this.nextLevelExp;
       this.level += 1;
@@ -575,12 +659,11 @@ class Player {
       if (this.character === 'knight') {
         this.armor += 1;
       }
-      if (this.level >= 3 && this.pendingUnlocks.length > 0) {
-        const weaponName = this.pendingUnlocks.shift();
-        if (weaponName) {
-          this.unlockWeapon(weaponName);
-        }
-      }
+      gameState.pendingLevelUps += 1;
+      leveled = true;
+    }
+    if (leveled && !gameState.paused) {
+      triggerLevelUpModal();
     }
   }
 
@@ -593,7 +676,7 @@ class Player {
   }
 
   getDamageMultiplier() {
-    let multiplier = 1 + (this.level - 1) * 0.05;
+    let multiplier = (1 + (this.level - 1) * 0.05) * this.bonusDamageMult;
     if (this.killStreakActive) {
       multiplier += 0.15;
     }
@@ -601,10 +684,20 @@ class Player {
   }
 
   draw(ctx) {
-    const size = CHARACTER_DEFS[this.character].spriteSize;
+    const def = CHARACTER_DEFS[this.character];
+    const size = def.spriteSize;
     const drawX = this.position.x - size * 0.5;
-    const drawY = this.position.y - size * 0.5;
-    this.sprite.draw(ctx, drawX, drawY, 1, this.velocity.x < 0);
+    const drawY = this.position.y - size * 0.55;
+    // Aura to help identify hero
+    ctx.save();
+    ctx.fillStyle = def.aura;
+    ctx.globalAlpha = 0.25;
+    ctx.beginPath();
+    ctx.arc(this.position.x, this.position.y + 6, size * 0.7, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    this.sprite.draw(ctx, drawX, drawY, 1.25, this.velocity.x < 0);
     ctx.fillStyle = '#222';
     ctx.fillRect(drawX, drawY - 12, size, 5);
     ctx.fillStyle = '#7cf5ff';
@@ -645,6 +738,16 @@ const WEAPON_CONFIGS = {
       });
       if (hit) {
         spawnParticleBurst(player.position.x, player.position.y, '#ff4d6d', 'slash', 8);
+        addSlashArc(
+          player.position.x,
+          player.position.y,
+          weapon.range,
+          facingAngle,
+          120 * DEG_TO_RAD,
+          '#ff4d6d',
+          16,
+          0.35
+        );
       }
       return true;
     }
@@ -670,13 +773,14 @@ const WEAPON_CONFIGS = {
         }
       });
       spawnParticleBurst(player.position.x, player.position.y, '#ffa600', 'explosion', 12);
+      addSlashArc(player.position.x, player.position.y, weapon.range * 1.1, 0, Math.PI * 2, '#ffa600', 18, 0.4);
       return true;
     }
   },
   SoulreaverDagger: {
     damage: 5,
-    fireRate: 2,
-    range: 30,
+    fireRate: 3.2,
+    range: 45,
     type: 'multi-hit',
     execute: (player, enemies, weapon) => {
       let target = null;
@@ -704,6 +808,7 @@ const WEAPON_CONFIGS = {
         );
       }
       spawnParticleBurst(target.position.x, target.position.y, '#ff6f91', 'blood', 6);
+      addSlashArc(target.position.x, target.position.y, 42, Math.random() * Math.PI * 2, 100 * DEG_TO_RAD, '#ff6f91', 10, 0.25);
       return true;
     }
   },
@@ -728,31 +833,37 @@ const WEAPON_CONFIGS = {
         }
       });
       spawnParticleBurst(player.position.x, player.position.y, '#c5cbe3', 'glow', 10);
+      addSlashArc(player.position.x, player.position.y, weapon.range * 1.2, Math.random() * Math.PI * 2, Math.PI * 1.3, '#c5cbe3', 14, 0.45);
       return true;
     }
   },
   ChaosOrb: {
     damage: 8,
-    fireRate: 1.2,
-    range: 300,
+    fireRate: 1.6,
+    range: 360,
     type: 'projectile',
     execute: (player) => {
-      const orbCount = 2 + Math.floor(Math.random() * 3);
+      const orbCount = 3;
+      const target =
+        gameState.enemies.find((e) => e.alive) ||
+        { position: player.position.clone().add(Vector2.fromAngle(Math.random() * Math.PI * 2, 1)) };
       for (let i = 0; i < orbCount; i += 1) {
-        const angle = Math.random() * Math.PI * 2;
-        const velocity = Vector2.fromAngle(angle, 200);
+        const spread = (i - 1) * 0.2;
+        const angle = player.position.angle(target.position) + spread;
+        const velocity = Vector2.fromAngle(angle, 240);
         gameState.projectiles.push(
           new Projectile({
             position: player.position.clone(),
             velocity,
             damage: 8 * player.getDamageMultiplier(),
             range: 320,
-            pierce: 3,
+            pierce: 2,
             owner: player,
             color: '#7bed9f'
           })
         );
       }
+      addSlashArc(player.position.x, player.position.y, 30, Math.random() * Math.PI * 2, Math.PI * 2, '#7bed9f', 8, 0.25);
       return true;
     }
   },
@@ -776,6 +887,7 @@ const WEAPON_CONFIGS = {
         }
       });
       spawnParticleBurst(player.position.x, player.position.y, '#ff4f00', 'slash', 16);
+      addSlashArc(player.position.x, player.position.y, weapon.range, Math.PI * 1.5, Math.PI * 1.8, '#ff4f00', 16, 0.4);
       return true;
     }
   },
@@ -812,6 +924,16 @@ const WEAPON_CONFIGS = {
         'glow',
         14
       );
+      addSlashArc(
+        player.position.x,
+        player.position.y,
+        weapon.range * 0.6,
+        Math.atan2(direction.y, direction.x),
+        50 * DEG_TO_RAD,
+        '#ff99c8',
+        12,
+        0.35
+      );
       return true;
     }
   },
@@ -837,6 +959,7 @@ const WEAPON_CONFIGS = {
         }
       });
       spawnParticleBurst(player.position.x, player.position.y, '#f1c40f', 'explosion', 25);
+      addSlashArc(player.position.x, player.position.y, weapon.range * 1.2, Math.random() * Math.PI * 2, Math.PI * 2, '#f1c40f', 24, 0.5);
       triggerScreenShake();
       return true;
     }
@@ -878,8 +1001,10 @@ const gameState = {
   enemies: [],
   souls: [],
   particles: [],
+  fx: [],
   projectiles: [],
   alive: false,
+  paused: false,
   keys: { w: false, a: false, s: false, d: false },
   gameTime: 0,
   waveTimer: 0,
@@ -892,6 +1017,12 @@ const gameState = {
   essenceCollected: 0,
   pendingGodsayer: false,
   screenShake: 0,
+  spawnQueue: 0,
+  spawnCooldown: 0,
+  showOverlay: false,
+  camera: new Vector2(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2),
+  survivalTarget: SURVIVAL_TARGET,
+  pendingLevelUps: 0,
   lastTimestamp: performance.now()
 };
 
@@ -904,8 +1035,22 @@ function ensureCanvas() {
   }
 }
 
+function resizeCanvas() {
+  ensureCanvas();
+  if (!gameState.canvas) {
+    return;
+  }
+  const width = Math.max(window.innerWidth || CANVAS_WIDTH, 800);
+  const height = Math.max(window.innerHeight || CANVAS_HEIGHT, 600);
+  CANVAS_WIDTH = width;
+  CANVAS_HEIGHT = height;
+  gameState.canvas.width = width;
+  gameState.canvas.height = height;
+}
+
 function initGame(character = 'knight') {
   ensureCanvas();
+  resizeCanvas();
   gameState.player = new Player(character);
   gameState.enemies = [];
   gameState.souls = [];
@@ -920,23 +1065,22 @@ function initGame(character = 'knight') {
   gameState.essenceCollected = 0;
   gameState.alive = true;
   gameState.screenShake = 0;
+  gameState.spawnQueue = 0;
+  gameState.spawnCooldown = 0;
+  gameState.waveNumber = 0;
+  gameState.waveTimer = 0;
+  gameState.pendingLevelUps = 0;
+  gameState.paused = false;
+  spawnWave();
 }
 
 function spawnWave() {
   if (!gameState.player) {
     return;
   }
-  const count = 5 + gameState.waveNumber * 2;
-  for (let i = 0; i < count; i += 1) {
-    const isElite = Math.random() < 0.2;
-    const pool = Object.keys(ENEMY_DEFS).filter((key) => ENEMY_DEFS[key].elite === isElite);
-    const type = pool[Math.floor(Math.random() * pool.length)];
-    const angle = Math.random() * Math.PI * 2;
-    const spawnRadius = 150 + Math.random() * 100;
-    const posX = gameState.player.position.x + Math.cos(angle) * spawnRadius;
-    const posY = gameState.player.position.y + Math.sin(angle) * spawnRadius;
-    gameState.enemies.push(new Enemy(type, posX, posY));
-  }
+  const base = 6;
+  const increment = 2 + Math.floor(gameState.waveNumber * 0.8);
+  gameState.spawnQueue = base + increment;
   gameState.waveNumber += 1;
   gameState.waveTimer = 0;
 }
@@ -946,20 +1090,23 @@ function spawnBoss() {
   const bossName = bossKeys[gameState.bossIndex % bossKeys.length];
   gameState.bossIndex += 1;
   const edge = Math.floor(Math.random() * 4);
-  let x = 0;
-  let y = 0;
+  const baseX = gameState.player ? gameState.player.position.x : CANVAS_WIDTH / 2;
+  const baseY = gameState.player ? gameState.player.position.y : CANVAS_HEIGHT / 2;
+  let x = baseX;
+  let y = baseY;
+  const offset = 450;
   if (edge === 0) {
-    x = Math.random() * CANVAS_WIDTH;
-    y = -50;
+    x += (Math.random() - 0.5) * 300;
+    y -= offset;
   } else if (edge === 1) {
-    x = CANVAS_WIDTH + 50;
-    y = Math.random() * CANVAS_HEIGHT;
+    x += offset;
+    y += (Math.random() - 0.5) * 300;
   } else if (edge === 2) {
-    x = Math.random() * CANVAS_WIDTH;
-    y = CANVAS_HEIGHT + 50;
+    x += (Math.random() - 0.5) * 300;
+    y += offset;
   } else {
-    x = -50;
-    y = Math.random() * CANVAS_HEIGHT;
+    x -= offset;
+    y += (Math.random() - 0.5) * 300;
   }
   const boss = new Enemy(bossName, x, y, true);
   gameState.enemies.push(boss);
@@ -1023,6 +1170,107 @@ function triggerScreenShake(intensity = 10) {
   gameState.screenShake = Math.max(gameState.screenShake, intensity);
 }
 
+function addSlashArc(x, y, radius, angle, spread, color, thickness = 12, lifetime = 0.3) {
+  const start = angle - spread * 0.5;
+  const end = angle + spread * 0.5;
+  gameState.fx.push(new FXArc(x, y, radius, start, end, color, thickness, lifetime));
+}
+
+function pickLevelUpOptions(player) {
+  const options = [];
+  const pool = LEVEL_UP_POOL.slice();
+  // add weapon unlock option if available
+  if (player.pendingUnlocks.length > 0 && player.level >= 3) {
+    const weaponName = player.pendingUnlocks[0];
+    pool.push({
+      id: `weapon:${weaponName}`,
+      title: `Unlock ${weaponName}`,
+      desc: 'Gain a new weapon'
+    });
+  }
+  while (options.length < 3 && pool.length > 0) {
+    const idx = Math.floor(Math.random() * pool.length);
+    options.push(pool.splice(idx, 1)[0]);
+  }
+  return options;
+}
+
+function applyUpgradeChoice(id) {
+  const player = gameState.player;
+  if (!player) return;
+  if (id.startsWith('weapon:')) {
+    const weapon = id.split(':')[1];
+    const index = player.pendingUnlocks.indexOf(weapon);
+    if (index >= 0) {
+      player.pendingUnlocks.splice(index, 1);
+    }
+    player.unlockWeapon(weapon);
+  } else if (id === 'dmg') {
+    player.bonusDamageMult *= 1.15;
+  } else if (id === 'speed') {
+    player.bonusSpeedMult *= 1.1;
+  } else if (id === 'armor') {
+    player.armor += 1;
+  } else if (id === 'heal') {
+    player.health = Math.min(player.maxHealth, player.health + player.maxHealth * 0.3);
+  } else if (id === 'essence') {
+    gameState.weaponCharges += 1;
+  } else if (id === 'firerate') {
+    player.weapons.forEach((w) => {
+      w.fireRate *= 1.1;
+    });
+  }
+  if (gameState.pendingLevelUps > 0) {
+    gameState.pendingLevelUps -= 1;
+  }
+  if (gameState.pendingLevelUps > 0) {
+    triggerLevelUpModal();
+    return;
+  }
+  gameState.paused = false;
+  if (typeof window !== 'undefined' && typeof window.hideLevelUp === 'function') {
+    window.hideLevelUp();
+  }
+}
+
+function triggerLevelUpModal() {
+  if (!gameState.player) return;
+  const options = pickLevelUpOptions(gameState.player);
+  gameState.paused = true;
+  if (typeof window !== 'undefined' && typeof window.presentLevelUp === 'function') {
+    window.presentLevelUp(options);
+  }
+}
+
+function spawnEnemyAtRing() {
+  if (!gameState.player) return;
+  const minRadius = 320;
+  const maxRadius = 720 + gameState.waveNumber * 8;
+  const angle = Math.random() * Math.PI * 2;
+  const radius = minRadius + Math.random() * (maxRadius - minRadius);
+  const x = gameState.player.position.x + Math.cos(angle) * radius;
+  const y = gameState.player.position.y + Math.sin(angle) * radius;
+  const waveEliteChance = Math.min(0.15 + gameState.waveNumber * 0.01, 0.35);
+  const isElite = Math.random() < waveEliteChance;
+  const pool = Object.keys(ENEMY_DEFS).filter((key) => ENEMY_DEFS[key].elite === isElite);
+  const type = pool[Math.floor(Math.random() * pool.length)];
+  gameState.enemies.push(new Enemy(type, x, y));
+}
+
+function tickSpawn(dt) {
+  const waveInterval = 18;
+  if (gameState.waveTimer >= waveInterval) {
+    spawnWave();
+  }
+  gameState.spawnCooldown -= dt;
+  const spawnRate = Math.max(0.2, 0.7 - gameState.waveNumber * 0.03);
+  if (gameState.spawnQueue > 0 && gameState.spawnCooldown <= 0) {
+    spawnEnemyAtRing();
+    gameState.spawnQueue -= 1;
+    gameState.spawnCooldown = spawnRate;
+  }
+}
+
 function updateProjectiles(dt) {
   for (let i = gameState.projectiles.length - 1; i >= 0; i -= 1) {
     const projectile = gameState.projectiles[i];
@@ -1031,7 +1279,7 @@ function updateProjectiles(dt) {
     for (let j = gameState.enemies.length - 1; j >= 0; j -= 1) {
       const enemy = gameState.enemies[j];
       if (!enemy.alive) continue;
-      if (projectile.position.distance(enemy.position) <= projectile.radius + 20) {
+      if (projectile.position.distance(enemy.position) <= projectile.radius + enemy.hitRadius) {
         const killed = enemy.takeDamage(projectile.damage);
         if (killed) {
           handleEnemyDeath(enemy);
@@ -1075,17 +1323,30 @@ function updateParticles(dt) {
   }
 }
 
+function updateFx(dt) {
+  for (let i = gameState.fx.length - 1; i >= 0; i -= 1) {
+    const fx = gameState.fx[i];
+    fx.update(dt);
+    if (fx.remaining <= 0) {
+      gameState.fx.splice(i, 1);
+    }
+  }
+}
+
 function updateEnemies(dt) {
   const player = gameState.player;
   for (let i = gameState.enemies.length - 1; i >= 0; i -= 1) {
     const enemy = gameState.enemies[i];
     enemy.update(dt, player, gameState.difficultyMultiplier);
+    enemy.attackTimer = Math.max(enemy.attackTimer - dt, -0.01);
     if (!enemy.alive && enemy.deathTimer > 1.5) {
       gameState.enemies.splice(i, 1);
     }
-    if (enemy.alive && enemy.position.distance(player.position) <= 30) {
+    const hitRange = enemy.hitRadius + (player.radius || 26);
+    if (enemy.alive && enemy.position.distance(player.position) <= hitRange && enemy.attackTimer <= 0) {
       const damage = enemy.damage;
       player.takeDamage(damage);
+      enemy.attackTimer = enemy.attackDelay;
       spawnParticleBurst(player.position.x, player.position.y, '#ff5d73', 'blood', 5);
     }
   }
@@ -1107,16 +1368,23 @@ function gameLoop(dt) {
   if (!gameState.ctx) {
     return;
   }
+  if (gameState.paused) {
+    drawGame();
+    notifyHUD();
+    return;
+  }
   if (gameState.player && gameState.alive) {
     gameState.gameTime += dt;
     gameState.waveTimer += dt;
     gameState.bossTimer += dt;
-    gameState.difficultyMultiplier = 1 + gameState.gameTime / 4;
+    gameState.difficultyMultiplier = Math.min(1 + gameState.gameTime / 120, 4);
     gameState.player.update(dt, gameState);
+    tickSpawn(dt);
     updateEnemies(dt);
     updateProjectiles(dt);
     updateSouls(dt);
     updateParticles(dt);
+    updateFx(dt);
     if (gameState.waveTimer >= 30) {
       spawnWave();
     }
@@ -1137,6 +1405,14 @@ function drawGame() {
     return;
   }
   ctx.save();
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  const cam = gameState.player
+    ? gameState.player.position.clone()
+    : gameState.camera || new Vector2(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+  gameState.camera = cam.clone();
+  drawBackground(ctx, cam);
+  ctx.translate(CANVAS_WIDTH * 0.5 - cam.x, CANVAS_HEIGHT * 0.5 - cam.y);
   if (gameState.screenShake > 0) {
     ctx.translate(
       (Math.random() - 0.5) * gameState.screenShake,
@@ -1144,42 +1420,47 @@ function drawGame() {
     );
     gameState.screenShake *= 0.9;
   }
-  drawBackground(ctx);
   gameState.souls.forEach((soul) => soul.draw(ctx));
   gameState.enemies.forEach((enemy) => enemy.draw(ctx));
   gameState.projectiles.forEach((projectile) => projectile.draw(ctx));
   if (gameState.player) {
     gameState.player.draw(ctx);
   }
+  gameState.fx.forEach((fx) => fx.draw(ctx));
   gameState.particles.forEach((particle) => particle.draw(ctx));
   drawHUDOverlay(ctx);
   ctx.restore();
 }
 
-function drawBackground(ctx) {
-  const gradient = ctx.createLinearGradient(0, 0, 0, CANVAS_HEIGHT);
-  gradient.addColorStop(0, '#1a0327');
-  gradient.addColorStop(0.5, '#1f1f49');
-  gradient.addColorStop(1, '#040308');
+function drawBackground(ctx, cam) {
+  const width = CANVAS_WIDTH;
+  const height = CANVAS_HEIGHT;
+  ctx.save();
+  // Base gradient so фон всегда виден
+  const gradient = ctx.createLinearGradient(0, 0, 0, height);
+  gradient.addColorStop(0, '#13111d');
+  gradient.addColorStop(0.5, '#0d0c14');
+  gradient.addColorStop(1, '#08070d');
   ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
-  for (let i = 0; i < 8; i += 1) {
-    const angle = (Math.PI * 2 * i) / 8;
-    const cx = CANVAS_WIDTH / 2 + Math.cos(angle) * 200;
-    const cy = CANVAS_HEIGHT / 2 + Math.sin(angle) * 120;
-    ctx.beginPath();
-    ctx.ellipse(cx, cy, 20, 50, angle, 0, Math.PI * 2);
-    ctx.stroke();
+  ctx.fillRect(0, 0, width, height);
+
+  // Тайл карты поверх, если загрузился
+  if (mapLoaded && MAP_IMAGE.width && MAP_IMAGE.height) {
+    const tileW = MAP_IMAGE.width;
+    const tileH = MAP_IMAGE.height;
+    const offsetX = -((cam.x % tileW) + tileW) % tileW;
+    const offsetY = -((cam.y % tileH) + tileH) % tileH;
+    for (let x = offsetX - tileW; x < width + tileW; x += tileW) {
+      for (let y = offsetY - tileH; y < height + tileH; y += tileH) {
+        ctx.drawImage(MAP_IMAGE, x, y, tileW, tileH);
+      }
+    }
   }
-  ctx.strokeStyle = 'rgba(196,30,58,0.25)';
-  ctx.beginPath();
-  ctx.arc(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 120, 0, Math.PI * 2);
-  ctx.stroke();
+  ctx.restore();
 }
 
 function drawHUDOverlay(ctx) {
-  if (!gameState.player) {
+  if (!gameState.player || !gameState.showOverlay) {
     return;
   }
   ctx.fillStyle = 'rgba(0,0,0,0.35)';
@@ -1198,7 +1479,12 @@ function notifyHUD() {
   if (typeof window !== 'undefined' && typeof window.updateHUD === 'function') {
     window.updateHUD(gameState);
   }
-  if (!gameState.alive && typeof window !== 'undefined' && typeof window.showDeathScreen === 'function') {
+  const shouldShowDeath =
+    gameState.player &&
+    !gameState.alive &&
+    typeof window !== 'undefined' &&
+    typeof window.showDeathScreen === 'function';
+  if (shouldShowDeath) {
     window.showDeathScreen(gameState);
   }
 }
@@ -1210,6 +1496,8 @@ function animationLoop(timestamp) {
   window.requestAnimationFrame(animationLoop);
 }
 
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 window.requestAnimationFrame(animationLoop);
 
 function setKeyState(key, isDown) {
@@ -1227,3 +1515,4 @@ window.spawnBoss = spawnBoss;
 window.grantEssence = grantEssence;
 window.handleEnemyDeath = handleEnemyDeath;
 window.triggerScreenShake = triggerScreenShake;
+window.applyUpgradeChoice = applyUpgradeChoice;
