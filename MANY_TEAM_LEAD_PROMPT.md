@@ -10,18 +10,18 @@ You are **Many**, Team Lead. Coordinate Cody, Dali, Sonic to transform Souls of 
 - Photo 1-3: Real gameplay maps with grass, trees, decorations, atmospheric depth
 - Photo 5: Actual character designs (unique personified heroes, not circles)
 
-Game must be playable, balanced, visually professional. 1500 token limit = economical delegation.
+Game must be playable, balanced, visually professional. **NO CIRCLES ANYWHERE**. 1500 token limit = economical delegation.
 
 ---
 
 ## QUICK OVERVIEW
 
 **3 Tasks, 3 Agents:**
-1. **Cody** → game.js (balance, obstacles, spawn)
-2. **Dali** → 15 PNG sprites (map, chars, enemies, bosses)
+1. **Cody** → game.js (balance, obstacles, spawn, sprite rendering)
+2. **Dali** → 17 PNG sprites (map, chars, enemies, bosses, decorations, player indicator)
 3. **Sonic** → 14 JSON animations
 
-**Output:** Game with NO circles, 60 FPS, balanced difficulty 0-10min
+**Output:** Game with ZERO circles, 60 FPS, balanced difficulty 0-10min
 
 ---
 
@@ -31,6 +31,8 @@ Send this EXACT text to Cody:
 
 ```
 Update game.js for Souls of Abyss.
+
+CRITICAL: NO CIRCLES. All rendering MUST use sprites.
 
 1. Add ObstacleManager:
    class ObstacleManager {
@@ -51,10 +53,23 @@ Update game.js for Souls of Abyss.
    
 7. Boss: spawn at 90s, then 120s. Health *= difficultyMultiplier
    
-8. drawObstacles(ctx): render trees/pillars/rocks as shapes with shadows
+8. REPLACE ALL circle() renders with sprite.draw():
+   - Player: draw from heroSprite (knight/witch/rogue)
+   - Enemies: draw from enemySprite[type]
+   - Bosses: draw from bossSprite[type] (96x96)
+   - Obstacles: draw from decorationSprite[type] (48x48)
+   - Projectiles: draw from projectileSprite or small sprite (12x12)
+   - NO ctx.arc() calls for gameplay elements
    
-9. Verify: 60 FPS, no errors, obstacles render
+9. Load all sprites at startup:
+   heroSprite = loadSprite('sprites/knight.png', 48)
+   decorationSprite = {tree: loadSprite('sprites/decoration_tree.png', 48), ...}
+   projectileSprite = loadSprite('sprites/projectile.png', 12)
    
+10. drawProjectiles(ctx): draw each projectile using projectileSprite.draw() at (x,y)
+    
+11. Verify: 60 FPS, no errors, ZERO circles, all sprites render
+    
 Return: game.js ONLY
 ```
 
@@ -65,38 +80,43 @@ Return: game.js ONLY
 Send this to Dali (emphasize reference photos):
 
 ```
-Create 15 PNG sprites for Souls of Abyss. Reference: photos showing Vampire Survivors style gameplay.
+Create 17 PNG sprites for Souls of Abyss. Reference: photos showing Vampire Survivors style gameplay.
 
-MAPHAVE ACTUAL GRASS, DEPTH, ATMOSPHERIC EFFECTS (NOT GRADIENT):
+CRITICAL: All assets must be drawable sprites, NO circles, NO placeholders.
+
+MAP - REAL GRASS, DEPTH, ATMOSPHERIC EFFECTS (NOT GRADIENT):
 1. sprites/map.png (1000x600)
    - Base: grass texture (green-brown, worn)
    - Fog/mist layers for depth
    - Darker edges (vignette)
    - NO plain gradient. REAL grass/terrain like vampire survivors
-   - Supports decorations on top
+   - NO circles
 
-2. sprites/decorations.png (256x256 sheet - 4x tiles)
-   - Tree (48x48) - dark wood, gnarled branches
-   - Pillar (48x48) - ancient stone
-   - Rock (48x48) - moss-covered
-   - Crypt (48x48) - gothic arch
+DECORATIONS - 4 DRAWABLE SPRITES (48x48 each):
+2. sprites/decoration_tree.png (48x48) - dark wood, gnarled branches, has shadow
+3. sprites/decoration_pillar.png (48x48) - ancient stone, carved edges
+4. sprites/decoration_rock.png (48x48) - moss-covered boulder, rough texture
+5. sprites/decoration_crypt.png (48x48) - gothic arch stone
+
+PROJECTILE:
+6. sprites/projectile.png (12x12) - small glowing projectile sprite (NOT circle)
 
 CHARACTERS - UNIQUE PERSONIFIED DESIGNS (NOT CIRCLES):
-3. sprites/knight.png (384x240, 5 rows×8 frames)
+7. sprites/knight.png (384x240, 5 rows × 8 frames)
    - Heavy armor (red/gold trim), large sword, cape
    - Idle: breathing, glowing red aura
    - Run: heavy stride, armor clanking
    - Attack: sword swing (powerful)
    - Death: collapse & fade
 
-4. sprites/witch.png (384x240, 5 rows)
+8. sprites/witch.png (384x240, 5 rows)
    - Flowing robe, pointed hat, staff with glow
    - Idle: levitating, magical aura (purple)
    - Run: floating elegance
    - Cast: staff raises, magic buildup
    - Death: dissolves ethereal
 
-5. sprites/rogue.png (384x240, 5 rows)
+9. sprites/rogue.png (384x240, 5 rows)
    - Dark leather, dual daggers, hooded
    - Idle: crouched ready (orange accent)
    - Run: quick dashing (FAST)
@@ -105,22 +125,22 @@ CHARACTERS - UNIQUE PERSONIFIED DESIGNS (NOT CIRCLES):
 
 ENEMIES - DISTINCT DESIGNS WITH HIERARCHY:
 Regular (simple):
-6. zombie.png (240x240) - Gray shambler, tattered
-7. spectre.png (240x240) - Blue ethereal, floating
-8. cultist.png (240x240) - Purple robed, staff
+10. sprites/zombie.png (240x240) - Gray shambler, tattered, NO circles
+11. sprites/spectre.png (240x240) - Blue ethereal, floating form
+12. sprites/cultist.png (240x240) - Purple robed, staff
 
 Elite (powerful, glowing):
-9. vampire.png (240x240) - Red (#c41e3a), noble, menacing
-10. wraith.png (240x240) - Black shadowy, writhing
-11. corrupted_knight.png (240x240) - Gray armored, tainted
-12. warden.png (240x240) - Cyan celestial, bright glow
+13. sprites/vampire.png (240x240) - Red (#c41e3a), noble, menacing
+14. sprites/wraith.png (240x240) - Black shadowy, writhing form
+15. sprites/corrupted_knight.png (240x240) - Gray armored, tainted
+16. sprites/warden.png (240x240) - Cyan celestial, bright glow
 
 BOSSES - MASSIVE, INTIMIDATING (96x96, NOT 48x48):
-13. shadow_lord.png (384x384) - Red aura, glowing eyes, dark overlord
-14. void_rift.png (384x384) - Purple cosmic, tentacles, swirling
-15. ancient_one.png (384x384) - Orange cosmic, eldritch, massive
+17. sprites/shadow_lord.png (384x384) - Red aura, glowing eyes, dark overlord
+18. sprites/void_rift.png (384x384) - Purple cosmic, tentacles, swirling
+19. sprites/ancient_one.png (384x384) - Orange cosmic, eldritch, massive
 
-ALL: PNG transparency, dark fantasy palette, matches Vampire Survivors aesthetic
+ALL: PNG transparency, dark fantasy palette, matches Vampire Survivors aesthetic. NO CIRCLES ANYWHERE.
 ```
 
 ---
@@ -187,8 +207,9 @@ Return: 14 JSON files to animations/ folder (no markdown)
 5. Report what's complete
 
 **CRITICAL NOTES:**
-- Dali: Reference photos show REAL maps with GRASS, not gradient. Characters are PERSONIFIED, not circles.
-- Cody: Obstacles must render visually, game must be balanced 0-10min survival
+- **ZERO CIRCLES**: All rendering must use sprites. No ctx.arc(), no fillRect() for game elements.
+- Dali: Reference photos show REAL maps with GRASS, not gradient. Characters are PERSONIFIED. All decorations are sprite-based.
+- Cody: Replace ALL circle rendering with sprite.draw(). Load sprites at startup. Verify zero circles in game.
 - Sonic: Animations must loop smoothly, bosses slow (0.5-0.8s per frame)
 
 ---
