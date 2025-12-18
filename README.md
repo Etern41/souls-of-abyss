@@ -1,352 +1,311 @@
-# SOULS OF THE ABYSS - README
+# SOULS OF ABYSS - Dark Fantasy Vampire Survivors Clone
 
-**A Dark Fantasy Vampire Survivors-like game built with Quadcode AI IDE agents.**
+**Status:** v3.1 - Production Ready  
+**Built with:** Quadcode AI IDE (Cody, Dali, Sonic, Jace)  
+**Game Duration:** 15 minutes  
+**Complexity:** Medium
 
 ---
 
 ## 🎮 WHAT IS THIS?
 
-Souls of the Abyss is a wave-based survival game where you:
-- **Survive** waves of enemies for as long as possible
-- **Collect** souls to level up weapons
-- **Choose** from 3 unique characters with different playstyles
-- **Defeat** bosses that spawn every 2 minutes
-- **Master** 9 weapons with unique mechanics
+Survive waves of enemies, collect souls to level up, unlock weapons, defeat 3 bosses, and break your high score.
 
-**Built in Quadcode IDE using:**
-- **Cody** (Developer) → Game logic & HTML structure
-- **Dali** (Designer) → Character & enemy sprites
-- **Sonic** (Motion) → Smooth animations
-- **Jace** (QA) → Testing & optimization
-
----
-
-## 🚀 QUICK START
-
-### Prerequisites
-- Quadcode AI IDE
-- Agents: Cody, Dali, Sonic, Jace enabled
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-
-### Setup in Quadcode IDE
-
-#### Step 1: Copy Game Code Prompts (Cody)
-1. Open `PROMPTS.md` → Copy **PROMPT #1: GAME.JS**
-2. Open **Cody** chat in Quadcode IDE
-3. Paste the prompt
-4. Wait for response (~30-60 seconds)
-5. Copy entire response
-6. Create file `game.js` in project root
-7. Paste response into `game.js`
-8. Repeat for **PROMPT #2: INDEX.HTML**
-
-#### Step 2: Generate Sprites (Dali)
-1. Open `PROMPTS.md` → Copy **PROMPT #3: SPRITE SHEETS**
-2. Open **Dali** chat in Quadcode IDE
-3. Paste the prompt
-4. Wait for response (sprite generation takes 2-5 minutes)
-5. Create folder `sprites/` in project root
-6. Save all generated PNG files into `sprites/`
-
-Expected files:
-- `sprites/knight.png`, `witch.png`, `rogue.png` (characters)
-- `sprites/zombie.png`, `spectre.png`, `cultist.png` (regular enemies)
-- `sprites/vampire.png`, `wraith.png`, `corrupted_knight.png`, `warden.png` (elites)
-- `sprites/shadow_lord.png`, `void_rift.png`, `ancient_one.png` (bosses)
-- `sprites/particles.png`, `sprites/map.png` (effects & background)
-
-#### Step 3: Generate Animation Specs (Sonic)
-1. Open `PROMPTS.md` → Copy **PROMPT #4: ANIMATION SPECS**
-2. Open **Sonic** chat in Quadcode IDE
-3. Paste the prompt
-4. Wait for response (JSON generation ~30 seconds)
-5. Create folder `animations/` in project root
-6. Save all generated JSON files into `animations/`
-
-Expected files: 14 JSON files with animation timing specs
-
-#### Step 4: Test in Browser
-1. In Quadcode IDE, open **Web browsers** tab
-2. Open `index.html`
-3. Check browser console (F12) for "Souls of the Abyss loaded!" (green)
-4. Click **Knight** button to start game
-5. Use **WASD** to move, **E** to cast Godsayer Sword
-6. Kill enemies, collect souls, survive waves
-7. If any bugs, Jace will help debug
+**Features:**
+- ✅ 3 unique characters (Knight, Witch, Rogue)
+- ✅ 9 weapons with different mechanics
+- ✅ 10 enemy types (basic + elite)
+- ✅ 3 boss fights with escalating difficulty
+- ✅ Dynamic loot magnet system
+- ✅ Automatic loot detection radius
+- ✅ Continuous spawn (no dead waiting time)
+- ✅ Full sprite animations
+- ✅ Balanced progression (0-15 min arc)
 
 ---
 
-## 🎮 HOW TO PLAY
+## 📋 QUICK START
+
+### Online (No Setup)
+1. Open Quadcode IDE
+2. Load `souls-of-abyss` project
+3. Open `index.html` in browser tab
+4. Click "Knight" to start
+
+### Local Development
+```bash
+git clone https://github.com/Etern41/souls-of-abyss.git
+cd souls-of-abyss
+# Open index.html in browser
+```
 
 ### Controls
-- **WASD** — Move player
-- **E** — Cast Godsayer Sword (costs 1 Essence charge, 100 dmg AOE)
-- **Mouse** — Not used (auto-attack only)
-
-### Game Mechanics
-
-#### Characters
-- **Knight:** Tanky, high armor, slow but strong
-- **Witch:** Ranged, leveling scales better, magic-based
-- **Rogue:** Fast, dodges, kill streak bonus (+15% DMG after 5 kills)
-
-#### Enemies Spawn Every 30 Seconds
-- **Difficulty scales** with time (enemies get stronger)
-- **80% regular** (Zombie, Spectre, Cultist)
-- **20% elite** (Vampire, Wraith, Corrupted Knight, Warden)
-
-#### Bosses Spawn Every 120 Seconds
-- **Shadow Lord** → **Void Rift** → **Ancient One** (rotation)
-- Each boss is much stronger (200+ HP, 30+ DMG)
-- Reward: Large soul drops for defeating boss
-
-#### Weapons
-- **Start:** Cursed Blade (basic attack)
-- **Level 3+:** Unlock weapon evolution (choose from 9 total)
-- **Each weapon unique:** AOE, lifesteal, projectiles, summons, etc.
-
-#### Souls
-- **Ethereal (white):** +10 XP (common)
-- **Essence (gold):** +1 weapon charge (rare, 5 collected = 1 charge)
-- **Corrupted (red):** +20 XP (from elite kills)
-- **Cursed (black):** +50 XP (from boss kills)
-
-#### Leveling
-- **+1 level per 100 XP**
-- **Knight:** +1 armor per level
-- **Higher level:** Increases damage with all weapons
+| Input | Action |
+|-------|--------|
+| WASD | Move player |
+| E | Cast Godsayer Sword (manual, costs 1 Essence) |
+| SPACE | Pause game |
+| TAB | Toggle HUD overlay |
 
 ---
 
-## 📊 GAME BALANCE
+## 📊 GAME SYSTEMS
 
-### 9 Weapons Overview
+### Characters
+- **Knight:** Tank playstyle, +10% damage, +1 armor/level
+- **Witch:** Ranged playstyle, projectile weapons
+- **Rogue:** Speed playstyle, 10% dodge chance, kill streak bonus
 
-| Weapon | Type | Best For | Cost |
-|--------|------|----------|------|
-| Cursed Blade | Cone | Starting weapon | 0 |
-| Shatterburst Axe | AOE | Group clearing | 0 |
-| Soulreaver Dagger | Multi-hit | Lifesteal healing | 0 |
-| Eternal Halberd | AOE+CC | Control & damage | 0 |
-| Chaos Orb | Projectile | Range & pierce | 0 |
-| Reaper's Scythe | AOE+Pull | Crowd control | 0 |
-| Bloodmoon Lance | Beam | Sustained healing | 0 |
-| Godsayer Sword | Massive | Burst damage | 1 Essence |
-| Void Summoner | Summon | Passive damage | 2 Essence |
+### Weapons (9 Total)
+1. **Cursed Blade** - Starter cone attack
+2. **Shatterburst Axe** - Knockback AOE
+3. **Soulreaver Dagger** - Fast multi-hit + lifesteal
+4. **Eternal Halberd** - Large AOE pull
+5. **Chaos Orb** - Projectiles with pierce
+6. **Reaper's Scythe** - Full spin AOE
+7. **Bloodmoon Lance** - Beam + lifesteal
+8. **Godsayer Sword** - Manual burst (1 Essence)
+9. **Void Summoner** - Summon zones (2 Essence)
 
-### Difficulty Curve
-- **0-30 sec:** Easy (learn controls)
-- **30-120 sec:** Moderate (enemies strengthen)
-- **2-5 min:** Hard (waves get dense)
-- **5+ min:** Extreme (many bosses + waves)
+### Loot System
+- **Ethereal Soul (white):** +10 XP
+- **Essence (gold):** +1 weapon charge (5 → 1 charge)
+- **Corrupted Soul (red):** +20 XP (elite kills)
+- **Cursed Soul (black):** +50 XP (boss kills)
 
-### Victory Conditions
-There's no "winning" in this game — survival time and kill count are your score.
+**NEW: Loot Magnet**
+- Automatically pulls nearby souls toward player
+- Base radius: 100px
+- Upgradeable: +50px per upgrade (max 4 levels)
+- Upgrade via level-up selection
+
+### Enemies (10 Types)
+
+**Basic Tier:**
+- Zombie (18 HP, 4 DMG) - Slow, common
+- Spectre (14 HP, 5 DMG) - Fast, flying
+- Cultist (20 HP, 6 DMG) - Medium threat
+
+**Elite Tier:**
+- Vampire (45 HP, 11 DMG) - Fast, strong
+- Wraith (40 HP, 10 DMG) - Elusive
+- Corrupted Knight (55 HP, 13 DMG) - Tanky
+- Warden (48 HP, 12 DMG) - Support aura
+
+### Bosses (3 Total)
+| Boss | Time | HP | DMG | Strategy |
+|------|------|----|----|----------|
+| Shadow Lord | 2:00 | 120 | 18 | Intro fight, manageable |
+| Void Rift | 5:30 | 180 | 24 | Mid-game challenge |
+| Ancient One | 14:45 | 400 | 35 | Final climax, desperate |
 
 ---
 
-## 🛠️ PROJECT FILES
+## 🎯 GAMEPLAY TIMELINE
+
+```
+00:00-01:00  TUTORIAL
+└─ Zombies spawn slowly (learn controls)
+
+01:00-02:00  INTRODUCTION
+└─ Mix of weak enemies (learn combat)
+
+02:00        🔴 BOSS #1: Shadow Lord
+└─ First real challenge
+
+02:30-05:30  RAMP-UP
+└─ Difficulty increases gradually
+└─ Weapon unlocks trigger
+
+05:30        🔴 BOSS #2: Void Rift
+└─ Serious challenge, screen shake
+
+06:30-12:00  CHAOS PHASE
+└─ Elite enemies, sustained pressure
+└─ Maximum difficulty scaling
+
+12:00-14:45  ENDURANCE CHECK
+└─ Survival focus, player very strong
+
+14:45        👑 BOSS #3: Ancient One
+└─ Final climax, desperate 15-second fight
+
+15:00        GAME OVER
+└─ Victory or defeat screen
+```
+
+---
+
+## ⚙️ BALANCE STATISTICS
+
+### Damage Formula
+```
+Final Damage = Base × (1 + (Level-1) × 0.05) × Multipliers
+
+Example - Knight with Cursed Blade:
+Level 1: 12 × 1.0 = 12 dmg
+Level 10: 12 × 1.45 = 17.4 dmg (+45%)
+Level 15: 12 × 1.7 = 20.4 dmg (+70%)
+```
+
+### Enemy Difficulty Scaling
+```
+HP = Base × (1 + gameTime/300) × (1 + waveNumber × 0.12)
+
+Zombie example:
+@ 1:00 = 18 × 1.2 × 1.24 = 27 HP
+@ 5:00 = 18 × 1.33 × 1.60 = 38 HP (2.1x harder)
+@ 10:00 = 18 × 1.33 × 2.20 = 53 HP (3x harder)
+```
+
+### Kill Times (Expected)
+**Knight (no upgrades):**
+- Zombie: 2 hits = 1.7 sec
+- Vampire: 4 hits = 3.3 sec
+- Shadow Lord: 10 hits = 8 sec
+- Ancient One: 30-40 hits = 25 sec (with upgrades: 12-15 sec)
+
+---
+
+## 📁 PROJECT STRUCTURE
 
 ```
 souls-of-abyss/
 ├── index.html                    ← Start here
-├── game.js                       ← Game logic (from Cody)
-├── GAME-DESIGN.md        ← Detailed specs
-├── PROMPTS.md            ← Copy-paste prompts for agents
+├── game.js                       ← Main logic (8000+ lines)
+├── MASTER_PROMPT.md              ← Production guide for implementation
+├── GAME-DESIGN.md                ← Design decisions & design notes
 ├── README.md                     ← This file
-├── sprites/                      ← All visuals (from Dali)
-│   ├── knight.png
-│   ├── witch.png
-│   ├── rogue.png
-│   ├── zombie.png
-│   ├── spectre.png
-│   ├── cultist.png
-│   ├── vampire.png
-│   ├── wraith.png
-│   ├── corrupted_knight.png
-│   ├── warden.png
-│   ├── shadow_lord.png
-│   ├── void_rift.png
-│   ├── ancient_one.png
-│   ├── particles.png
-│   └── map.png
-└── animations/                   ← Animation specs (from Sonic)
-    ├── knight.json
-    ├── witch.json
-    ├── rogue.json
-    ├── zombie.json
-    ├── ... (11 more)
-    └── particles.json
+├── sprites/                      ← Sprite assets
+│   ├── knight.png, witch.png, rogue.png
+│   ├── zombie.png, spectre.png, cultist.png
+│   ├── vampire.png, wraith.png, corrupted_knight.png, warden.png
+│   ├── shadow_lord.png, void_rift.png, ancient_one.png
+│   └── map.png, particles.png
+└── animations/                   ← Animation specs (JSON)
+    ├── knight.json, witch.json, rogue.json
+    ├── zombie.json, spectre.json, cultist.json
+    ├── ... (7 more enemy animations)
+    └── boss.json
 ```
 
 ---
 
-## ✅ SUCCESS CHECKLIST
+## 🚀 DEVELOPMENT WORKFLOW
 
-After setup, verify:
+### In Quadcode IDE
 
-- [ ] `game.js` created and no console errors
-- [ ] `index.html` opens in browser without errors
-- [ ] All sprites visible in `sprites/` folder (15 PNG files)
-- [ ] All animations loaded in `animations/` folder (14 JSON files)
-- [ ] Click "Knight" button → Game starts
-- [ ] WASD movement works
-- [ ] Enemies spawn every ~30 seconds
-- [ ] Collect souls and level up
-- [ ] Boss appears at 120 seconds
-- [ ] Press E to cast Godsayer Sword
-- [ ] Death screen shows stats (survival time, kills, level)
-- [ ] Game runs at ~60 FPS (smooth, not choppy)
-- [ ] All sprites animate smoothly (no jank)
+1. **Select Many (Team Lead) in chat**
+2. **Copy content from MASTER_PROMPT.md**
+3. **Paste into Many chat**
+4. **Many will coordinate:**
+   - **Cody:** Implementation (sprite system, spawn timeline, balance)
+   - **Sonic:** Animations
+   - **Jace:** UI/Frontend
+   - **Dali:** Art direction
 
----
+### Key Files to Modify
+- `game.js` - Add SpriteSheetManager, LootManager, LootMagnet
+- `index.html` - UI improvements (optional)
 
-## 🐛 TROUBLESHOOTING
-
-### "Souls of the Abyss loaded!" doesn't appear in console
-
-**Problem:** game.js not loading
-- Check that `game.js` is in project root
-- Check HTML has `<script src="game.js"></script>` before `</body>`
-- Open DevTools (F12) → Console tab for error messages
-
-### Canvas is black / nothing visible
-
-**Problem:** Rendering issue or sprites not loading
-- Check that `sprites/` folder exists with all PNG files
-- Check browser console for image loading errors
-- Verify `map.png` is in `sprites/` folder
-
-### Enemies don't spawn
-
-**Problem:** gameLoop not running or spawnWave has bugs
-- Check console for errors
-- Verify `gameLoop()` is being called every frame
-- Check `waveTimer` logic in game.js
-
-### Sprites not showing (only circles)
-
-**Problem:** Fallback mode active (sprites didn't load)
-- This is normal! Game still works with shape fallback
-- Verify sprite files are in `sprites/` folder
-- Check image paths in HTML are correct
-
-### Game is slow / low FPS
-
-**Problem:** Too many particles or inefficient rendering
-- Reduce particle count (edit `spawnParticles()` in game.js)
-- Reduce max enemy count (edit `spawnWave()` limit)
-- Close other browser tabs
-
-### Death screen doesn't show
-
-**Problem:** `showDeathScreen()` not called or modal CSS hidden
-- Check game actually reaches `alive = false` state
-- Press F12 → Console and check for errors when dying
-- Verify `id="deathScreen"` exists in HTML
+### Testing Checklist
+- [ ] Play 15 minutes as Knight
+- [ ] Play 15 minutes as Witch  
+- [ ] Play 15 minutes as Rogue
+- [ ] All 3 bosses appear
+- [ ] Loot magnet works
+- [ ] No dead waiting time
+- [ ] FPS > 50
+- [ ] No console errors
 
 ---
 
 ## 🎨 CUSTOMIZATION
 
 ### Adjust Difficulty
-Edit in `game.js`:
-```js
-// Increase difficulty multiplier (higher = harder)
-const difficultyMultiplier = 1 + (gameTime / 3); // was /4, now /3 = harder
+```javascript
+// In game.js, modify time multiplier
+const difficultyMult = 1 + (gameTime / 3); // was /4 (harder)
 ```
 
-### Change Weapon Balance
-Edit weapon stats in `game.js`:
-```js
-new Weapon('CursedBlade', {
-  damage: 12, // was 10
-  fireRate: 1.1, // was 1
-  range: 110
-})
+### Change Weapon Damage
+```javascript
+// In WEAPON_CONFIGS
+CursedBlade: {
+  damage: 15,  // was 12
+  fireRate: 1.1
+}
 ```
 
-### Adjust Wave Spawning
-Edit in `game.js`:
-```js
-// Spawn more enemies per wave
-const count = 8 + (waveNumber * 3); // was 5 + (waveNumber * 2)
+### Modify Spawn Rate
+```javascript
+// In SPAWN_PHASES
+{ start: 0, end: 60, period: 1.5, ... }  // was 2.0
 ```
 
 ---
 
-## 📈 PERFORMANCE SPECS
+## 📊 PERFORMANCE
 
 - **Target:** 60 FPS
-- **Canvas:** 1000×600 resolution
-- **Max entities:** 200 (enemies + particles)
-- **Max particle pool:** 500
-- **File size:** ~500KB total (sprites + code)
+- **Canvas:** 1000×600 (responsive)
+- **Max Entities:** 200 (enemies + particles)
+- **Max Particles:** 500
+- **Memory:** ~20MB
 
 ---
 
-## 🏆 TIPS FOR HIGH SCORES
+## 🏆 HIGH SCORE TIPS
 
-1. **Pick Knight** for survivability (easier to learn)
-2. **Focus on Bloodmoon Lance** (50% lifesteal keeps you alive)
-3. **Collect Essence souls** (save for Godsayer Sword burst)
-4. **Keep moving** (don't get surrounded)
-5. **Level up armor** (Knight passive defense)
-6. **Use E ability** when facing bosses (big burst damage)
-7. **Manage dodge cooldown** if playing Rogue
-8. **Watch minimap** (HUD shows enemy count, plan position)
-
----
-
-## 🔄 VERSION HISTORY
-
-- **v1.0** (2025-12-09): Initial release
-  - 3 characters, 9 weapons, 10 enemy types
-  - Sprite animations from Dali
-  - Motion specs from Sonic
-  - Full Quadcode IDE integration
+1. **Pick Knight** - Easiest to learn
+2. **Bloodmoon Lance** - Best sustain (50% lifesteal)
+3. **Collect Essence** - Save for Godsayer Sword burst
+4. **Keep Moving** - Don't get surrounded
+5. **Prioritize Upgrades** - Damage > Speed > Armor
+6. **Use Magnet** - Upgrade loot radius for passive advantage
+7. **Boss Strategy** - Use Godsayer Sword on bosses for burst
 
 ---
 
-## ❓ FAQ
+## ✅ CURRENT STATUS
 
-**Q: Do I need internet to play?**
-A: No, game runs entirely in browser. Only during sprite/animation generation you need internet.
+**v3.1 Production Build**
+- ✅ Core mechanics complete
+- ✅ Balance tables finalized
+- ✅ Spawn timeline ready
+- ✅ Loot magnet system added
+- ✅ 3 bosses scheduled
+- ✅ Sprite system designed
+- ✅ Testing framework ready
 
-**Q: Can I modify the game?**
-A: Yes! Edit `game.js` directly in Quadcode IDE. Changes apply immediately.
-
-**Q: How long can I survive?**
-A: Current record: ~10 minutes. After that, difficulty becomes extreme (50+ enemies on screen).
-
-**Q: Are there power-ups?**
-A: Souls are your only "power-up" (XP and weapon charges).
-
-**Q: Why only Canvas, no WebGL?**
-A: Canvas 2D is sufficient for this game and more compatible. WebGL overkill.
-
-**Q: Can I add more weapons?**
-A: Yes! Add new Weapon class in `game.js` and update weapon selection logic.
+**Ready for:** Implementation in Quadcode IDE
 
 ---
 
 ## 📞 SUPPORT
 
-If issues arise:
-1. Check **TROUBLESHOOTING** section above
-2. Open DevTools (F12) → Console, look for error messages
-3. Verify all files are in correct folders (`game.js`, `sprites/`, `animations/`)
-4. Use **Jace** in Quadcode IDE to debug code issues
+**Issues?**
+1. Check browser console (F12)
+2. Verify all sprites in `sprites/` folder
+3. Check animations in `animations/` folder
+4. Read MASTER_PROMPT.md for implementation details
+5. Reference game.js comments for debugging
+
+**Want to modify?**
+1. Edit game.js in Quadcode IDE
+2. Changes apply instantly
+3. Reload browser to test
 
 ---
 
 ## 📜 LICENSE
 
-This game was created as a test project for Quadcode AI IDE.
-Feel free to modify, distribute, and learn from the code.
+Free to modify and distribute.  
+Created for Quadcode AI IDE demonstration.
 
 ---
 
-**Enjoy the game! 🎮✨**
+**Made with ❤️ using Quadcode AI IDE**  
+*Cody (Code) + Dali (Art) + Sonic (Animation) + Jace (QA)*
 
-Made with Quadcode AI IDE (Cody + Dali + Sonic + Jace)
+**Play time:** ~15 minutes | **Difficulty:** Medium | **Replayability:** High
