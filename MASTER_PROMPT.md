@@ -1,6 +1,6 @@
 # SOULS OF ABYSS - Master Orchestration Guide for Many
 
-**Version:** 2.0  
+**Version:** 2.1  
 **Target Agent:** Many (Team Leader)  
 **Project Type:** Top-down dark fantasy roguelike (Vampire Survivors / Halls of Torment style)  
 **Timeline:** 15-minute max playtime  
@@ -8,14 +8,23 @@
 
 ---
 
+## 📚 REQUIRED READING
+
+**Before starting any task, all agents MUST read:**
+- **`GAME_DESIGN.md`** - Complete game specifications, visual style, enemy stats, timeline, biome rules
+
+This master prompt explains **HOW** to execute. `GAME_DESIGN.md` explains **WHAT** to build.
+
+---
+
 ## 🎯 PROJECT GOAL
 
 Transform the current prototype into a **polished, playable game** with:
 - Real pixel art sprites (characters, mobs, bosses, environment)
-- Dark fantasy atmosphere
+- Dark fantasy atmosphere (see `GAME_DESIGN.md` for palette)
 - Continuous action (no waiting between waves)
-- Smart procedural generation
-- Balanced 15-minute gameplay loop
+- Smart procedural generation (4 biomes)
+- Balanced 15-minute gameplay loop (3 boss encounters)
 
 ---
 
@@ -59,59 +68,66 @@ Transform the current prototype into a **polished, playable game** with:
 
 ### Phase 1A: Dali Creates Sprite Sheets
 
-**Style Guide:**
-- 16-bit/32-bit pixel art aesthetic
-- Dark fantasy theme (Vampire Survivors / Halls of Torment reference)
-- Clear silhouettes for gameplay readability
-- Consistent color palette: dark purples, grays, reds, blues
+**⚠️ Dali MUST read `GAME_DESIGN.md` sections:**
+- "PLAYABLE CHARACTERS" (Knight, Witch, Rogue descriptions)
+- "ENEMIES" (all 10 enemy types)
+- "VISUAL STYLE GUIDE" (color palette, pixel art specs)
+- "SETTING & ATMOSPHERE" (dark fantasy theme)
 
-**Required Sprite Sheets:**
+**Style Requirements (from GAME_DESIGN.md):**
+- 16-bit/32-bit pixel art aesthetic
+- Max 32 colors per sprite
+- Dark fantasy palette: #0d0c14, #4e5b6e, #b21f35, #4db1e8, etc.
+- Clear silhouettes for gameplay readability
+- Transparent backgrounds
+
+**Required Sprite Sheets (15 files):**
+
+See `GAME_DESIGN.md` for detailed descriptions of each character/enemy.
 
 #### Characters (3 files)
-1. `sprites/knight.png` - 256x64px (4 frames idle)
-   - Armored warrior with sword & shield
-   - Breathing animation
-
-2. `sprites/witch.png` - 256x64px (4 frames idle)
-   - Levitating sorceress with staff
-   - Floating bob animation
-
-3. `sprites/rogue.png` - 128x64px (2 frames idle)
-   - Hooded assassin crouching
-   - Ready stance
+1. `sprites/knight.png` - 256x64px (4 frames idle) - Armored warrior, sword & shield
+2. `sprites/witch.png` - 256x64px (4 frames idle) - Levitating sorceress with staff
+3. `sprites/rogue.png` - 128x64px (2 frames idle) - Hooded assassin crouching
 
 #### Regular Enemies (3 files)
-4. `sprites/zombie.png` - 64x32px (2 frames walk)
-5. `sprites/spectre.png` - 64x32px (2 frames float)
-6. `sprites/cultist.png` - 64x32px (2 frames walk)
+4. `sprites/zombie.png` - 64x32px (2 frames walk) - Rotting corpse, green skin
+5. `sprites/spectre.png` - 64x32px (2 frames float) - Translucent ghost with chains
+6. `sprites/cultist.png` - 64x32px (2 frames walk) - Purple robes, skull mask
 
 #### Elite Enemies (4 files)
-7. `sprites/vampire.png` - 120x40px (3 frames)
-8. `sprites/wraith.png` - 120x40px (3 frames)
-9. `sprites/corrupted_knight.png` - 96x48px (2 frames)
-10. `sprites/warden.png` - 120x40px (3 frames)
+7. `sprites/vampire.png` - 120x40px (3 frames) - Pale skin, crimson coat
+8. `sprites/wraith.png` - 120x40px (3 frames) - Black smoke, skull face, scythe
+9. `sprites/corrupted_knight.png` - 96x48px (2 frames) - Rusted armor, red eyes
+10. `sprites/warden.png` - 120x40px (3 frames) - Stone golem with runes
 
 #### Bosses (3 files)
-11. `sprites/shadow_lord.png` - 192x96px (2 frames breathe)
-12. `sprites/void_rift.png` - 288x96px (3 frames rotate)
-13. `sprites/ancient_one.png` - 192x96px (2 frames idle)
+11. `sprites/shadow_lord.png` - 192x96px (2 frames) - Towering armored, greataxe
+12. `sprites/void_rift.png` - 288x96px (3 frames) - Swirling black hole
+13. `sprites/ancient_one.png` - 192x96px (2 frames) - Lovecraftian tentacles
 
 #### Environment & Effects (2 files)
-14. `sprites/particles.png` - 96x16px (6 particle types: slash, explosion, spark, blood, glow, lifesteal)
-15. `sprites/tileset.png` - 512x512px tileset with:
-    - Ground tiles: dirt, stone, grass, cracked earth, lava
-    - Objects: rocks, columns, ruins, bones, braziers
-    - Organized in 32x32px grid
+14. `sprites/particles.png` - 96x16px (6 types: slash, explosion, spark, blood, glow, lifesteal)
+15. `sprites/tileset.png` - 512x512px organized in 32x32px tiles:
+    - **Row 1:** Stone floor, cracked stone, rubble
+    - **Row 2:** Dead grass, dirt, moss
+    - **Row 3:** Lava, scorched earth, magma glow
+    - **Row 4:** Broken tiles, blood stains, bones
+    - **Row 5-8:** Objects (rocks, columns, braziers, trees, sarcophagi)
 
 **Dali Success Criteria:**
 - All 15 PNG files created
+- Matches descriptions in `GAME_DESIGN.md`
 - Correct dimensions
-- Transparent backgrounds where needed
-- Frames aligned in horizontal strips
+- Transparent backgrounds
+- Frames aligned horizontally
 
 ---
 
 ### Phase 1B: Sonic Creates Animation Specs
+
+**⚠️ Sonic MUST read `GAME_DESIGN.md` sections:**
+- "VISUAL STYLE GUIDE" (animation timing guidelines)
 
 **Input:** Dali's sprite sheets  
 **Output:** JSON files in `animations/` folder
@@ -124,17 +140,17 @@ Transform the current prototype into a **polished, playable game** with:
       "frameCount": 4,
       "frameTime": 0.25,
       "loop": true
-    },
-    "run": {
-      "frameCount": 6,
-      "frameTime": 0.10,
-      "loop": true
     }
   }
 }
 ```
 
-**Critical:** `frameTime` must be in **SECONDS** (not milliseconds)
+**Critical:** `frameTime` in **SECONDS** (not milliseconds)
+
+**Timing from GAME_DESIGN.md:**
+- Fast (attack): 0.06-0.10 sec/frame
+- Medium (run): 0.10-0.15 sec/frame
+- Slow (idle): 0.25-0.40 sec/frame
 
 **Required Files (14 total):**
 ```
@@ -155,38 +171,30 @@ animations/
 └── particles.json (6 types: slash, explosion, spark, blood, glow, lifesteal)
 ```
 
-**Timing Guidelines:**
-- Fast actions (attack): 0.06-0.10 sec per frame
-- Medium (run): 0.10-0.15 sec per frame
-- Slow (idle): 0.25-0.40 sec per frame
-
 **Sonic Success Criteria:**
-- Valid JSON (no syntax errors)
+- Valid JSON
 - frameTime in seconds
-- frameCount matches sprite sheet frames
+- frameCount matches sprite frames
 
 ---
 
 ### Phase 1C: Cody Integrates Sprites
 
+**⚠️ Cody MUST read `GAME_DESIGN.md` sections:**
+- "TECHNICAL CONSTRAINTS" (performance targets)
+
 **Tasks:**
 
-1. **Update Sprite Class in game.js**
-   - Verify sprite loading works
-   - Add error handling for missing sprites
+1. **Verify Sprite Loading**
+   - Test all 15 PNG files load correctly
    - Add console logging: `console.log('✅ Loaded:', spriteName)`
+   - Handle 404 errors gracefully
 
 2. **Replace Fallback Rendering**
-   - Current code draws circles when sprites fail
-   - Keep fallback but ensure sprites load correctly
-   - In `Enemy.draw()` and `Player.draw()`: use sprite rendering
+   - Keep circle fallback but ensure sprites load
+   - Update `Enemy.draw()` and `Player.draw()`
 
-3. **Test Sprite Display**
-   - Open index.html in browser
-   - Verify characters show pixel art (not circles)
-   - Check browser console for errors
-
-4. **Add Tileset Manager**
+3. **Add Tileset Manager**
    ```javascript
    class TilesetManager {
      constructor(imageUrl, tileSize) {
@@ -210,43 +218,39 @@ animations/
    }
    ```
 
-5. **Update Background Rendering**
+4. **Update Background Rendering**
    - Replace gradient with tileset
-   - Draw tiles in `drawBackground()` function
+   - Use biome logic (prepare for Task 3)
 
 **Cody Success Criteria:**
-- Browser shows pixel art sprites
+- Pixel art sprites visible in browser
 - No console errors
-- Performance: 60 FPS with 50+ entities
+- 60 FPS with 50+ entities
 
 ---
 
 ## ⚡ TASK 2: FIX SPAWN SYSTEM (Cody)
 
+**⚠️ Cody MUST read `GAME_DESIGN.md` sections:**
+- "GAME TIMELINE (15 Minutes)" - Complete spawn schedule
+- "ENEMIES" - All enemy types and stats
+
 ### Problem: Wave System Creates Dead Time
 
-Current:
-```javascript
-function spawnWave() {
-  // Spawns 6-10 enemies
-  // Player kills them
-  // Waits 15s for next wave ❌
-}
-```
-
-### Solution: Timeline-Based Continuous Spawning
+Replace wave-based spawning with **timeline-based continuous spawning** as specified in `GAME_DESIGN.md`.
 
 **Implementation:**
 
+Use exact timeline from `GAME_DESIGN.md`:
+
 ```javascript
 const SPAWN_TIMELINE = [
-  // time_start, time_end, spawn_interval, enemy_types
-  { start: 0,   end: 60,   interval: 2.0, types: ['zombie'] },
-  { start: 60,  end: 120,  interval: 1.5, types: ['zombie', 'spectre', 'cultist'] },
-  { start: 120, end: 180,  interval: 1.2, types: ['spectre', 'cultist', 'vampire'] },
-  { start: 180, end: 330,  interval: 1.0, types: ['cultist', 'vampire', 'wraith'] },
-  { start: 330, end: 540,  interval: 0.8, types: ['vampire', 'wraith', 'corrupted_knight'] },
-  { start: 540, end: 900,  interval: 1.0, types: ['wraith', 'corrupted_knight', 'warden'] }
+  { start: 0,   end: 60,   interval: 2.0, types: ['zombie'], maxAlive: 8 },
+  { start: 60,  end: 120,  interval: 1.5, types: ['zombie', 'spectre', 'cultist'], maxAlive: 12 },
+  { start: 120, end: 180,  interval: 1.2, types: ['spectre', 'cultist', 'vampire'], maxAlive: 15 },
+  { start: 180, end: 330,  interval: 1.0, types: ['cultist', 'vampire', 'wraith'], maxAlive: 15 },
+  { start: 330, end: 540,  interval: 0.8, types: ['vampire', 'wraith', 'corrupted_knight'], maxAlive: 20 },
+  { start: 540, end: 900,  interval: 1.0, types: ['wraith', 'corrupted_knight', 'warden'], maxAlive: 18 }
 ];
 
 const BOSS_SCHEDULE = [
@@ -254,118 +258,39 @@ const BOSS_SCHEDULE = [
   { time: 330, type: 'void_rift' },     // 5:30
   { time: 870, type: 'ancient_one' }    // 14:30
 ];
-
-function getCurrentPhase(gameTime) {
-  return SPAWN_TIMELINE.find(p => 
-    gameTime >= p.start && gameTime < p.end
-  );
-}
-
-function tickSpawn(dt) {
-  const phase = getCurrentPhase(gameState.gameTime);
-  if (!phase) return;
-  
-  // Pause spawning if boss above 50% HP
-  const boss = gameState.enemies.find(e => e.isBoss && e.alive);
-  if (boss && boss.health > boss.maxHealth * 0.5) return;
-  
-  gameState.spawnTimer += dt;
-  if (gameState.spawnTimer >= phase.interval) {
-    const type = phase.types[Math.floor(Math.random() * phase.types.length)];
-    spawnEnemy(type);
-    gameState.spawnTimer = 0;
-  }
-}
-
-function checkBossSpawn() {
-  BOSS_SCHEDULE.forEach(boss => {
-    const timeDiff = Math.abs(gameState.gameTime - boss.time);
-    if (timeDiff < 0.1 && !gameState.bossSpawned[boss.type]) {
-      spawnBoss(boss.type);
-      gameState.bossSpawned[boss.type] = true;
-      triggerScreenShake(20);
-    }
-  });
-}
-
-// Add to gameLoop()
-function gameLoop(dt) {
-  // ...
-  tickSpawn(dt);
-  checkBossSpawn();
-  // ...
-}
 ```
+
+**Boss Spawn Rule:** Pause regular spawns when boss HP > 50%
 
 **Cody Tasks:**
 1. Replace `spawnWave()` with `tickSpawn()`
-2. Add `SPAWN_TIMELINE` constant
-3. Add `BOSS_SCHEDULE` constant
-4. Implement `checkBossSpawn()`
-5. Test: Play 5 minutes, ensure no dead time
-
-**Success Criteria:**
-- Enemies spawn continuously
-- No waiting between action
-- Difficulty ramps smoothly
-- Bosses appear at exact times
+2. Implement `checkBossSpawn()`
+3. Add difficulty scaling (1.0 → 4.0 over 15 min)
+4. Test: No dead time in 5-minute playthrough
 
 ---
 
 ## 🌍 TASK 3: PROCEDURAL WORLD GENERATION (Cody)
 
-### Problem: Empty World, Static Loot
+**⚠️ Cody MUST read `GAME_DESIGN.md` sections:**
+- "WORLD GENERATION" - Complete biome specs
+- "SETTING & ATMOSPHERE" - Visual theme
 
-Current:
-- World generates once at start
-- Loot spawns only initially
-- 90% of map is empty
+### Problem: Empty World
 
-### Solution: Dynamic Sector-Based Generation
+Implement **sector-based generation** with 4 biomes from `GAME_DESIGN.md`:
+
+**Biome Rules (from GAME_DESIGN.md):**
+- **Lava:** rocks, magma pools, scorched earth, NO grass
+- **Stone:** pillars, boulders, rubble, altars
+- **Grass:** dead trees, bushes, small rocks, bones
+- **Ruins:** columns, broken statues, sarcophagi, symmetrical layout
 
 **Implementation:**
 
 ```javascript
 class WorldGenerator {
-  constructor() {
-    this.sectors = new Map();
-    this.sectorSize = 200; // pixels
-  }
-  
-  getSectorKey(x, y) {
-    const sx = Math.floor(x / this.sectorSize);
-    const sy = Math.floor(y / this.sectorSize);
-    return `${sx}_${sy}`;
-  }
-  
-  generateSector(x, y) {
-    const key = this.getSectorKey(x, y);
-    if (this.sectors.has(key)) return;
-    
-    const sector = {
-      objects: [],
-      loot: [],
-      biome: this.determineBiome(x, y)
-    };
-    
-    // Generate environmental objects
-    const objCount = 3 + Math.floor(Math.random() * 5);
-    for (let i = 0; i < objCount; i++) {
-      const obj = this.createEnvironmentObject(sector.biome, x, y);
-      sector.objects.push(obj);
-    }
-    
-    // Spawn some loot
-    if (Math.random() < 0.3) {
-      const loot = this.createLoot(x, y);
-      sector.loot.push(loot);
-    }
-    
-    this.sectors.set(key, sector);
-  }
-  
   determineBiome(x, y) {
-    // Use noise or simple rules
     const noiseVal = (Math.sin(x * 0.01) + Math.cos(y * 0.01)) / 2;
     
     if (noiseVal < -0.3) return 'lava';
@@ -375,79 +300,31 @@ class WorldGenerator {
   }
   
   createEnvironmentObject(biome, baseX, baseY) {
-    const offsetX = (Math.random() - 0.5) * this.sectorSize;
-    const offsetY = (Math.random() - 0.5) * this.sectorSize;
-    
+    // Use object types from GAME_DESIGN.md biome definitions
     const types = {
-      lava:  ['rock', 'scorched_earth', 'magma_pool'],
-      stone: ['boulder', 'stone_pillar', 'rubble'],
-      grass: ['tree', 'bush', 'small_rock'],
-      ruins: ['column', 'broken_statue', 'sarcophagus']
+      lava:  ['rock', 'scorched_earth', 'magma_pool', 'steam_vent'],
+      stone: ['pillar', 'boulder', 'rubble', 'altar'],
+      grass: ['dead_tree', 'bush', 'small_rock', 'bones'],
+      ruins: ['column', 'broken_statue', 'sarcophagus', 'coffin']
     };
-    
-    const availableTypes = types[biome] || types.stone;
-    const type = availableTypes[Math.floor(Math.random() * availableTypes.length)];
-    
-    return {
-      type,
-      x: baseX + offsetX,
-      y: baseY + offsetY,
-      sprite: `env_${type}`
-    };
-  }
-  
-  createLoot(x, y) {
-    return {
-      type: 'soul',
-      x: x + (Math.random() - 0.5) * 100,
-      y: y + (Math.random() - 0.5) * 100
-    };
-  }
-  
-  update(playerX, playerY) {
-    // Generate sectors around player
-    const radius = 2; // sectors
-    for (let dx = -radius; dx <= radius; dx++) {
-      for (let dy = -radius; dy <= radius; dy++) {
-        const x = playerX + dx * this.sectorSize;
-        const y = playerY + dy * this.sectorSize;
-        this.generateSector(x, y);
-      }
-    }
+    // ...
   }
 }
-
-// Add to game state
-const worldGen = new WorldGenerator();
-
-// Call in gameLoop
-worldGen.update(player.position.x, player.position.y);
 ```
 
-**Environmental Object Rules:**
-- **Lava biome:** rocks, scorched earth, no grass
-- **Grass biome:** trees, bushes, occasional rocks
-- **Stone biome:** boulders, pillars, rubble
-- **Ruins biome:** columns, broken statues, sarcophagi
-
 **Cody Tasks:**
-1. Create `WorldGenerator` class
-2. Implement biome system
-3. Add object spawning logic
-4. Render environmental objects
-5. Add collision for large objects (optional)
-
-**Success Criteria:**
-- World feels full
-- Objects placed logically
-- Performance: 60 FPS with 100+ objects
-- No large empty areas
+1. Implement `WorldGenerator` with 4 biomes
+2. Add object spawning (3-8 per sector)
+3. Render objects with tileset
+4. Optional: Add collision for large objects
 
 ---
 
 ## 🔧 TASK 4: BALANCE & POLISH (Cody)
 
-### Enemy Stats Update
+**⚠️ Cody MUST use exact stats from `GAME_DESIGN.md` "ENEMIES" section.**
+
+### Update Enemy Stats
 
 ```javascript
 const ENEMY_DEFS = {
@@ -467,145 +344,73 @@ const BOSS_DEFS = {
 };
 ```
 
-### Hitbox Fix
+### Performance Verification
 
-Current issue: Enemies have tiny hitboxes → attacks miss
-
-**Fix in Enemy class:**
-```javascript
-class Enemy {
-  constructor(type, x, y, isBoss = false) {
-    // ...
-    const def = isBoss ? BOSS_DEFS[type] : ENEMY_DEFS[type];
-    this.hitRadius = def.hitbox || 16; // Use explicit hitbox size
-  }
-}
-```
-
-### Player Damage Formula
-
-```javascript
-getDamageMultiplier() {
-  let mult = 1 + (this.level - 1) * 0.05; // 5% per level
-  mult *= this.bonusDamageMult; // From upgrades
-  if (this.killStreakActive) mult += 0.15; // Rogue bonus
-  return mult;
-}
-```
-
-### Performance Checks
-
-**Cody must verify:**
-- FPS stays above 50 with 100+ entities
-- No memory leaks (run 15 min, check RAM)
-- Collision detection efficient
-- Sprite rendering optimized
-
-**Optimizations if needed:**
-- Cull off-screen entities
-- Pool particle objects
-- Cache sprite frames
+**From GAME_DESIGN.md "TECHNICAL CONSTRAINTS":**
+- 60 FPS minimum
+- Max 150 entities on screen
+- No memory leaks in 15-min run
 
 ---
 
 ## 📋 EXECUTION ORDER
 
-**Many orchestrates in this sequence:**
+**Many orchestrates:**
 
 ### Week 1: Visuals
-1. **Day 1-2:** Dali creates all sprite sheets (15 files)
-2. **Day 2-3:** Sonic creates animation JSONs (14 files)
-3. **Day 3-4:** Cody integrates sprites + tileset
+1. **Day 1-2:** Dali creates sprites (read `GAME_DESIGN.md` first!)
+2. **Day 2-3:** Sonic creates animations
+3. **Day 3-4:** Cody integrates sprites
 
 ### Week 2: Gameplay
-4. **Day 5:** Cody implements timeline spawn system
+4. **Day 5:** Cody implements timeline spawn (exact schedule from GDD)
 5. **Day 6:** Cody adds boss schedule
-6. **Day 7:** Cody implements world generator
+6. **Day 7:** Cody implements world generator (4 biomes)
 
 ### Week 3: Polish
-7. **Day 8:** Cody updates balance (HP/DMG/hitboxes)
-8. **Day 9:** Testing & bug fixes
-9. **Day 10:** Final polish & performance
+7. **Day 8:** Cody updates balance (use GDD stats)
+8. **Day 9:** Testing
+9. **Day 10:** Final polish
 
 ---
 
 ## ✅ SUCCESS CRITERIA
 
-**Game is "done" when:**
+**Game is "done" when it matches `GAME_DESIGN.md` specifications:**
 
 ### Visual ✅
-- [x] Pixel art characters visible (not circles)
-- [x] All enemies have sprites
-- [x] Bosses look intimidating
-- [x] Environment has variety (rocks, columns, etc.)
-- [x] Map uses tileset (not gradient)
+- Pixel art matches GDD descriptions
+- 4 biomes visible
+- Objects placed per biome rules
 
 ### Gameplay ✅
-- [x] 15-minute playtime
-- [x] Continuous enemy spawning (no dead time)
-- [x] 3 bosses appear at scheduled times
-- [x] World feels full (objects + loot everywhere)
-- [x] Difficulty ramps smoothly
+- 15-minute playtime
+- Timeline spawn (no dead time)
+- 3 bosses at exact times (2:00, 5:30, 14:30)
+- Difficulty scaling (1.0 → 4.0)
 
 ### Technical ✅
-- [x] 60 FPS with 100+ entities
-- [x] No console errors
-- [x] No crashes after 15+ min
-- [x] Mobile-friendly (1000x600 canvas)
-
-### Fun ✅
-- [x] Player wants to replay
-- [x] Different characters feel unique
-- [x] Progression is satisfying
-- [x] Boss fights are memorable
-
----
-
-## 🚨 COMMON ISSUES & FIXES
-
-**"Sprites show as circles"**
-→ Check browser console for 404 errors  
-→ Verify sprite paths match filenames  
-→ Ensure PNGs uploaded to `sprites/` folder
-
-**"Enemies spawn too fast/slow"**
-→ Adjust `interval` in `SPAWN_TIMELINE`  
-→ Test with different values (0.5-2.0 sec)
-
-**"World generation lags"**
-→ Reduce sector generation radius  
-→ Cache generated sectors  
-→ Limit objects per sector to 5-8
-
-**"Hitboxes still feel wrong"**
-→ Increase `hitRadius` values in ENEMY_DEFS  
-→ Draw debug circles (hitbox visualization)  
-→ Test with playtesters
+- 60 FPS with 150 entities
+- No crashes
 
 ---
 
 ## 📞 AGENT COMMUNICATION
 
-**Many's responsibilities:**
-1. Assign tasks to Dali, Sonic, Cody in correct order
-2. Verify each phase complete before next
-3. Test integration points
-4. Report blockers immediately
+**Many's checklist before assigning tasks:**
+1. ✅ Agent read `GAME_DESIGN.md` relevant sections?
+2. ✅ Agent has clear success criteria?
+3. ✅ Dependencies complete (Dali → Sonic → Cody)?
 
-**Expected outputs:**
-- Dali: 15 PNG files in `sprites/`
-- Sonic: 14 JSON files in `animations/`
-- Cody: Updated `game.js` (functional changes)
-
-**Status reporting format:**
+**Status reporting:**
 ```
-✅ Phase 1A Complete: All sprite sheets created
-⏳ Phase 1B In Progress: Sonic creating animation JSONs (8/14 done)
-❌ Phase 1C Blocked: Waiting for Sonic completion
+✅ Phase 1A Complete: Sprites match GDD specs
+⏳ Phase 1B In Progress: 8/14 JSONs done
+❌ Phase 1C Blocked: Waiting for Sonic
 ```
 
 ---
 
 **END OF MASTER PROMPT**
 
-Many: Read this guide, understand priorities, execute phases in order. Ask questions if anything unclear. Goal = ship playable game in 2-3 weeks. Let's go! 🚀
+**Many:** Before starting, ensure all agents have read `GAME_DESIGN.md`. That document is the source of truth. This prompt is your execution guide. Let's ship! 🚀
